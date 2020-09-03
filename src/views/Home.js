@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PageTemplate from '../templates/PageTemplate';
 import styled from 'styled-components';
+import { AppContext } from '../context';
 import Header from '../components/organisms/Header/Header';
 import Modal from '../components/molecules/Modal/Modal';
+import ExpensesList from '../components/organisms/ExpensesList/ExpensesList';
 import { months } from '../helpers/months';
 
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -16,14 +18,7 @@ const StyledDateContainer = styled.div`
 `;
 
 const Home = () => {
-  useEffect(() => {
-    const date = new Date();
-    setMonth(date.getMonth());
-    setYear(date.getFullYear());
-  }, []);
-
-  const [month, setMonth] = useState(null);
-  const [year, setYear] = useState(null);
+  const { month, year, setMonth, setYear } = useContext(AppContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleNextMonth = () => {
