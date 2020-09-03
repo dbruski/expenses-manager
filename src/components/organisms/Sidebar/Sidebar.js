@@ -12,7 +12,7 @@ const StyledWrapper = styled.nav`
   left: 0;
   top: 0;
   background: green;
-  width: 10vw;
+  width: 8vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@ const StyledWrapper = styled.nav`
 `;
 
 const StyledLogo = styled.div`
-  margin: 5vh auto 10vh auto;
+  margin: 5vh auto 15vh auto;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,8 +6,9 @@ import Sidebar from '../components/organisms/Sidebar/Sidebar';
 const StyledWrapper = styled.main`
   position: relative;
   min-height: 100vh;
-  width: 90vw;
-  margin-left: 10vw;
+  width: 92vw;
+  margin-left: 8vw;
+  overflow: hidden;
 `;
 
 const PageTemplate = ({ children }) => (
