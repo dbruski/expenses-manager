@@ -1,4 +1,4 @@
-import { SET_MONTH, SET_YEAR } from '../consts';
+import { SET_MONTH, SET_YEAR, SET_AUTO_PAID } from '../consts';
 
 const reducer = (state, { type, payload }) => {
   switch (type) {
@@ -11,6 +11,23 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         year: payload.year,
+      };
+    case SET_AUTO_PAID:
+      return {
+        ...state,
+        expenses: [
+          ...state.expenses.map((expense) => {
+            if (expense.id === payload.id) {
+              expense.paid.push({
+                month: payload.month,
+                year: payload.year,
+                amount: payload.amount,
+              });
+              return expense;
+            }
+            return expense;
+          }),
+        ],
       };
     default:
       return state;

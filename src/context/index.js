@@ -1,15 +1,25 @@
 import React, { createContext, useReducer } from 'react';
 import reducer from '../reducer';
-import { setMonth, setYear } from '../actions';
+import { setMonth, setYear, setAutoPaid } from '../actions';
 
 export const AppContext = createContext();
 
 const date = new Date();
 
 const initial = {
-  year: date.getFullYear(),
+  day: date.getDate(),
   month: date.getMonth(),
+  year: date.getFullYear(),
   expenses: [
+    {
+      id: 0,
+      name: 'afterdeadline',
+      amount: 10,
+      auto: true,
+      deadline: 1,
+      constantly: true,
+      paid: [],
+    },
     {
       id: 1,
       name: 'mieszkanie',
@@ -60,11 +70,13 @@ export const Provider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        day: state.day,
         month: state.month,
         year: state.year,
         expenses: state.expenses,
         setMonth: setMonth(dispatch),
         setYear: setYear(dispatch),
+        setAutoPaid: setAutoPaid(dispatch),
       }}
     >
       {children}
