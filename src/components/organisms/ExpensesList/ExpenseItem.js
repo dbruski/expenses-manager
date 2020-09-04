@@ -35,7 +35,7 @@ const ExpenseItem = ({ header, name, amount, deadline, type, status }) => {
       <StyledExpenseItem>{amount}</StyledExpenseItem>
       <StyledExpenseItem>{deadline}</StyledExpenseItem>
       <StyledExpenseItem>{type ? 'auto' : 'manual'}</StyledExpenseItem>
-      <StyledExpenseItem>{status}</StyledExpenseItem>
+      <StyledExpenseItem>{status ? 'paid' : 'not paid'}</StyledExpenseItem>
     </StyledExpense>
   );
 };
