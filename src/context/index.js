@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import reducer from '../reducer';
-import { setMonth, setYear, setAutoPaid } from '../actions';
+import { setMonth, setYear, setAsPaid } from '../actions';
 
 export const AppContext = createContext();
 
@@ -76,7 +76,7 @@ export const Provider = ({ children }) => {
         expenses: state.expenses,
         setMonth: setMonth(dispatch),
         setYear: setYear(dispatch),
-        setAutoPaid: setAutoPaid(dispatch),
+        setAsPaid: setAsPaid(dispatch),
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { SET_MONTH, SET_YEAR, SET_AUTO_PAID } from '../consts';
+import { SET_MONTH, SET_YEAR, SET_AS_PAID } from '../consts';
 
 export const setMonth = (dispatch) => (month) => {
   dispatch({
@@ -14,9 +14,9 @@ export const setYear = (dispatch) => (year) => {
   });
 };
 
-export const setAutoPaid = (dispatch) => (id, month, year, amount) => {
+export const setAsPaid = (dispatch) => (id, month, year, amount) => {
   dispatch({
-    type: SET_AUTO_PAID,
+    type: SET_AS_PAID,
     payload: { id, month, year, amount },
   });
 };
