@@ -28,18 +28,33 @@ const StyledExpenseItem = styled.p`
     `}
 `;
 
-const ExpenseItem = ({ header, name, deadline, amount, type, status }) => {
+const ExpenseItem = ({ header, name, amount, deadline, type, status }) => {
   return (
     <StyledExpense header={header}>
       <StyledExpenseItem nameItem>{name}</StyledExpenseItem>
       <StyledExpenseItem>{amount}</StyledExpenseItem>
       <StyledExpenseItem>{deadline}</StyledExpenseItem>
-      <StyledExpenseItem>{type}</StyledExpenseItem>
+      <StyledExpenseItem>{type ? 'auto' : 'manual'}</StyledExpenseItem>
       <StyledExpenseItem>{status}</StyledExpenseItem>
     </StyledExpense>
   );
 };
 
-ExpenseItem.propTypes = {};
+ExpenseItem.propTypes = {
+  header: PropTypes.bool,
+  name: PropTypes.string,
+  amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  deadline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  type: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+};
+
+ExpenseItem.defaultProps = {
+  header: false,
+  name: 'name',
+  amount: 'amount',
+  deadline: 'deadline',
+  type: 'type',
+  status: 'status',
+};
 
 export default ExpenseItem;

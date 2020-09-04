@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../../context';
 import ExpenseItem from './ExpenseItem';
@@ -16,18 +15,23 @@ const StyledList = styled.ul`
 const ExpensesList = ({}) => {
   const { month, year, expenses } = useContext(AppContext);
 
+  const constantlyExpenses = expenses.filter((expense) => expense.constantly);
+
+  const specifiedExpenses = expenses
+    .filter((expense) => expense.inMonthAndYear)
+    .filter((specifiedExpense) =>
+      specifiedExpense.inMonthAndYear.some(
+        (dateObject) => dateObject.month === month && dateObject.year === year,
+      ),
+    );
+  const expensesInThisMonth = [...constantlyExpenses, ...specifiedExpenses];
+  console.log(expensesInThisMonth);
+
   return (
     <StyledWrapper>
       <StyledList>
-        <ExpenseItem
-          header
-          name="name"
-          amount="amount"
-          deadline="deadline"
-          type="type"
-          status="status"
-        />
-        {expenses.map((expense) => (
+        <ExpenseItem header />
+        {expensesInThisMonth.map((expense) => (
           <ExpenseItem
             key={expense.id}
             name={expense.name}
@@ -41,7 +45,5 @@ const ExpensesList = ({}) => {
     </StyledWrapper>
   );
 };
-
-ExpensesList.propTypes = {};
 
 export default ExpensesList;
