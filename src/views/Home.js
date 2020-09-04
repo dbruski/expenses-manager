@@ -56,7 +56,7 @@ const Home = () => {
             />
           </StyledDateContainer>
         </Header>
-        hi
+        <ExpensesList />
         {isModalOpen && (
           <Modal
             header="Title"

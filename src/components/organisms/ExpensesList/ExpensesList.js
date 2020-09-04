@@ -13,7 +13,7 @@ const StyledList = styled.ul`
 `;
 
 const ExpensesList = ({}) => {
-  const { day, month, year, expenses, setAutoPaid } = useContext(AppContext);
+  const { day, month, year, expenses, setAsPaid } = useContext(AppContext);
 
   const constantlyExpenses = expenses.filter((expense) => expense.constantly);
 
@@ -29,11 +29,9 @@ const ExpensesList = ({}) => {
 
   useEffect(() => {
     expensesInThisMonth
-      .filter((expense) => day >= expense.deadline)
-      .forEach((expense) =>
-        setAutoPaid(expense.id, month, year, expense.amount),
-      );
-  }, []);
+      .filter((expense) => day >= expense.deadline && expense.auto)
+      .forEach((expense) => setAsPaid(expense.id, month, year, expense.amount));
+  }, [day, month, year]);
 
   return (
     <StyledWrapper>
@@ -42,13 +40,16 @@ const ExpensesList = ({}) => {
         {expensesInThisMonth.map((expense) => (
           <ExpenseItem
             key={expense.id}
+            id={expense.id}
             name={expense.name}
             amount={expense.amount}
             deadline={expense.deadline}
             type={expense.auto}
-            status={expense.paid.some(
-              (obj) => obj.month === month && obj.year === year,
-            )}
+            paid={expense.paid}
+            setAsPaidFc={setAsPaid}
+            day={day}
+            month={month}
+            year={year}
           />
         ))}
       </StyledList>
