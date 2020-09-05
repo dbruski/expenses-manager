@@ -1,18 +1,31 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import Button from '../../atoms/Button/Button';
+import DoneIcon from '@material-ui/icons/Done';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const StyledExpense = styled.li`
   display: grid;
   grid-template-columns: 1fr 0.25fr 0.25fr 0.25fr 0.25fr 0.25fr;
-  background: #fff;
+  background: ${({ theme }) => theme.white};
   margin-bottom: 1px;
   padding: 15px;
+  transition: 0.2s ease-in-out;
+
+  :hover {
+    background: ${({ theme }) => theme.grey100};
+  }
+
   ${({ header }) =>
     header &&
     css`
-      background: green;
-      color: white;
+      background: ${({ theme }) => theme.primary};
+      color: ${({ theme }) => theme.white};
+
+      :hover {
+        background: ${({ theme }) => theme.primary};
+      }
     `}
 `;
 
@@ -28,6 +41,17 @@ const StyledExpenseItem = styled.p`
     `}
 `;
 
+const StyledStatusContainer = styled.div`
+  color: ${({ theme }) => theme.white};
+  background: ${({ paid, theme }) => (paid ? theme.primary : theme.danger)};
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+`;
+
 const ExpenseItem = ({
   header,
   id,
@@ -37,37 +61,81 @@ const ExpenseItem = ({
   type,
   paid,
   setAsPaidFc,
+  day,
   month,
   year,
 }) => {
   const checkIfPaid = () =>
     paid && paid.some((obj) => obj.month === month && obj.year === year);
 
-  const handleExpenseType = (type) => (type ? 'auto' : 'manual');
+  useEffect(() => {
+    if (day >= deadline && type) {
+      setAsPaidFc(id, month, year, amount);
+    }
+    //eslint-disable-next-line
+  }, [day, deadline, type]);
+
+  const handleDeadlineContent = (header) => {
+    if (header) {
+      return 'deadline';
+    } else {
+      return `${deadline < 10 ? `0${deadline}` : deadline}-${
+        month + 1 < 10 ? `0${month + 1}` : month + 1
+      }-${year}`;
+    }
+  };
+
+  const handleActionContent = (header) => {
+    if (header) {
+      return 'actions';
+    } else if (checkIfPaid()) {
+      return <Button disabled>paid</Button>;
+    } else if (type) {
+      return <Button auto>auto</Button>;
+    } else {
+      return (
+        <Button primary onClick={() => setAsPaidFc(id, month, year, amount)}>
+          pay
+        </Button>
+      );
+    }
+  };
+
+  const handleExpenseType = (header) => {
+    if (header) {
+      return 'type';
+    } else if (type) {
+      return 'auto';
+    } else {
+      return 'manual';
+    }
+  };
+
+  const handleStatus = (header) => {
+    if (header) {
+      return 'status';
+    } else if (checkIfPaid()) {
+      return (
+        <StyledStatusContainer paid>
+          <DoneIcon />
+        </StyledStatusContainer>
+      );
+    } else {
+      return (
+        <StyledStatusContainer>
+          <ClearIcon />
+        </StyledStatusContainer>
+      );
+    }
+  };
   return (
     <StyledExpense header={header}>
       <StyledExpenseItem nameItem>{name}</StyledExpenseItem>
       <StyledExpenseItem>{amount}</StyledExpenseItem>
-      <StyledExpenseItem>
-        {header
-          ? 'deadline'
-          : `${deadline < 10 ? `0${deadline}` : deadline}-${
-              month < 10 ? `0${month}` : month
-            }-${year}`}
-      </StyledExpenseItem>
-      <StyledExpenseItem>
-        {header ? (
-          'actions'
-        ) : checkIfPaid() ? (
-          'paid'
-        ) : (
-          <span onClick={() => setAsPaidFc(id, month, year, amount)}>pay</span>
-        )}
-      </StyledExpenseItem>
-      <StyledExpenseItem>{handleExpenseType(type)}</StyledExpenseItem>
-      <StyledExpenseItem>
-        {checkIfPaid() ? 'paid' : 'not paid'}
-      </StyledExpenseItem>
+      <StyledExpenseItem>{handleDeadlineContent(header)}</StyledExpenseItem>
+      <StyledExpenseItem>{handleActionContent(header)}</StyledExpenseItem>
+      <StyledExpenseItem>{handleExpenseType(header)}</StyledExpenseItem>
+      <StyledExpenseItem>{handleStatus(header)}</StyledExpenseItem>
     </StyledExpense>
   );
 };
@@ -79,19 +147,16 @@ ExpenseItem.propTypes = {
   amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   deadline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   type: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  paid: PropTypes.array,
   setPaidFc: PropTypes.func,
+  day: PropTypes.number,
   month: PropTypes.number,
   year: PropTypes.number,
 };
 
 ExpenseItem.defaultProps = {
-  header: false,
   name: 'name',
   amount: 'amount',
-  deadline: 'deadline',
-  actions: 'actions',
-  type: 'type',
-  status: 'status',
 };
 
 export default ExpenseItem;
