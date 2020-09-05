@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../../context';
 import ExpenseItem from './ExpenseItem';
@@ -12,7 +12,7 @@ const StyledList = styled.ul`
   flex-direction: column;
 `;
 
-const ExpensesList = ({}) => {
+const ExpensesList = () => {
   const { day, month, year, expenses, setAsPaid } = useContext(AppContext);
 
   const constantlyExpenses = expenses.filter((expense) => expense.constantly);
@@ -26,12 +26,6 @@ const ExpensesList = ({}) => {
     );
 
   const expensesInThisMonth = [...constantlyExpenses, ...specifiedExpenses];
-
-  useEffect(() => {
-    expensesInThisMonth
-      .filter((expense) => day >= expense.deadline && expense.auto)
-      .forEach((expense) => setAsPaid(expense.id, month, year, expense.amount));
-  }, [day, month, year]);
 
   return (
     <StyledWrapper>

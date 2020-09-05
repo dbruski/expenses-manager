@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const StyledLink = styled.li`
   position: relative;
-  color: white;
+  color: ${({ theme }) => theme.white};
   margin: 20px;
   cursor: pointer;
   border-radius: 12px;
@@ -12,7 +12,7 @@ const StyledLink = styled.li`
 
   :hover {
     transform: scale(1.09);
-    background: darkgreen;
+    background: ${({ theme }) => theme.primary100};
   }
 `;
 
@@ -23,7 +23,7 @@ const StyledBadge = styled.div`
   width: 70px;
   height: 20px;
   border-radius: 6px;
-  background: black;
+  background: ${({ theme }) => theme.black};
   text-align: center;
   transform: translate(-50%, -50%);
 

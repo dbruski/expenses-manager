@@ -19,7 +19,7 @@ const StyledOverlay = styled.div`
 const StyledWrapper = styled.div`
   position: relative;
   width: 50vw;
-  height: 60vh;
+  /* height: 60vh; */
   background: #eee;
   border-radius: 8px;
 `;
@@ -50,7 +50,7 @@ const StyledCloseButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: red;
+  background: ${({ theme }) => theme.danger};
   transition: all 0.2s ease-in-out;
 
   :hover {

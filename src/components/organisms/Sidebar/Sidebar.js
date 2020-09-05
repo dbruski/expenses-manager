@@ -11,7 +11,7 @@ const StyledWrapper = styled.nav`
   position: fixed;
   left: 0;
   top: 0;
-  background: green;
+  background: ${({ theme }) => theme.primary};
   width: 8vw;
   height: 100vh;
   display: flex;
@@ -29,9 +29,9 @@ const StyledLogo = styled.div`
   width: 78px;
   font-size: 58px;
   border-radius: 50px;
-  color: white;
-  font-weight: bold;
-  border: 10px solid white;
+  color: ${({ theme }) => theme.white};
+  font-weight: ${({ theme }) => theme.bold};
+  border: 10px solid ${({ theme }) => theme.white};
 `;
 
 const StyledList = styled.ul``;

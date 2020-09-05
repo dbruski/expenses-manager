@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const StyledWrapper = styled.header`
   width: 100%;
   height: 10vh;
-  background: #fff;
+  background: ${({ theme }) => theme.white};
   display: flex;
   justify-content: space-between;
   padding: 0px 20px;
@@ -13,7 +13,7 @@ const StyledWrapper = styled.header`
 `;
 
 const StyledHeader = styled.h1`
-  color: green;
+  color: ${({ theme }) => theme.primary};
 `;
 
 const Header = ({ title, children }) => {
