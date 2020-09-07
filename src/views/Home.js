@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PageTemplate from '../templates/PageTemplate';
 import styled from 'styled-components';
 import { AppContext } from '../context';
 import Header from '../components/organisms/Header/Header';
 import Modal from '../components/molecules/Modal/Modal';
+import Button from '../components/atoms/Button/Button';
 import ExpensesList from '../components/organisms/ExpensesList/ExpensesList';
-import { months } from '../helpers/months';
-
+import { months } from '../helpers';
+import ExpenseForm from '../components/organisms/Forms/ExpenseForm';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
@@ -48,7 +49,7 @@ const Home = () => {
               onClick={handlePrevMonth}
               style={{ cursor: 'pointer' }}
             />
-            {typeof month === 'number' ? `${months[month].name} ${year}` : null}
+            {month !== undefined ? `${months[month].name} ${year}` : null}
             <NavigateNextIcon
               fontSize="large"
               onClick={handleNextMonth}
@@ -59,10 +60,15 @@ const Home = () => {
         <ExpensesList />
         {isModalOpen && (
           <Modal
-            header="Title"
+            header="Add expense"
             closeModalFunction={() => setIsModalOpen(false)}
-          ></Modal>
+          >
+            <ExpenseForm closeModalFunction={() => setIsModalOpen(false)} />
+          </Modal>
         )}
+        <Button addExpense onClick={() => setIsModalOpen(true)}>
+          +
+        </Button>
       </>
     </PageTemplate>
   );
