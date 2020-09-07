@@ -14,12 +14,12 @@ const StyledOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 `;
 
 const StyledWrapper = styled.div`
   position: relative;
-  width: 50vw;
-  /* height: 60vh; */
+  width: 40vw;
   background: #eee;
   border-radius: 8px;
 `;

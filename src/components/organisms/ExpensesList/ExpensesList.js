@@ -38,7 +38,7 @@ const ExpensesList = () => {
             name={expense.name}
             amount={expense.amount}
             deadline={expense.deadline}
-            type={expense.auto}
+            auto={expense.auto}
             paid={expense.paid}
             setAsPaidFc={setAsPaid}
             day={day}

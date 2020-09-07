@@ -41,7 +41,7 @@ const StyledExpenseItem = styled.p`
     `}
 `;
 
-const StyledStatusContainer = styled.div`
+const StyledStatusContainer = styled.span`
   color: ${({ theme }) => theme.white};
   background: ${({ paid, theme }) => (paid ? theme.primary : theme.danger)};
   width: 35px;
@@ -58,7 +58,7 @@ const ExpenseItem = ({
   name,
   amount,
   deadline,
-  type,
+  auto,
   paid,
   setAsPaidFc,
   day,
@@ -69,11 +69,11 @@ const ExpenseItem = ({
     paid && paid.some((obj) => obj.month === month && obj.year === year);
 
   useEffect(() => {
-    if (day >= deadline && type) {
+    if (day >= deadline && auto) {
       setAsPaidFc(id, month, year, amount);
     }
     //eslint-disable-next-line
-  }, [day, deadline, type]);
+  }, [day, deadline, auto]);
 
   const handleDeadlineContent = (header) => {
     if (header) {
@@ -90,7 +90,7 @@ const ExpenseItem = ({
       return 'actions';
     } else if (checkIfPaid()) {
       return <Button disabled>paid</Button>;
-    } else if (type) {
+    } else if (auto) {
       return <Button auto>auto</Button>;
     } else {
       return (
@@ -104,7 +104,7 @@ const ExpenseItem = ({
   const handleExpenseType = (header) => {
     if (header) {
       return 'type';
-    } else if (type) {
+    } else if (auto) {
       return 'auto';
     } else {
       return 'manual';
@@ -146,7 +146,7 @@ ExpenseItem.propTypes = {
   name: PropTypes.string,
   amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   deadline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  type: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  auto: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   paid: PropTypes.array,
   setPaidFc: PropTypes.func,
   day: PropTypes.number,
