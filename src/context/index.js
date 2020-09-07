@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import reducer from '../reducer';
-import { setMonth, setYear, setAsPaid } from '../actions';
+import { setMonth, setYear, setAsPaid, addExpense } from '../actions';
 
 export const AppContext = createContext();
 
@@ -10,6 +10,11 @@ const initial = {
   day: date.getDate(),
   month: date.getMonth(),
   year: date.getFullYear(),
+  categories: [
+    { id: 1, name: 'Car' },
+    { id: 2, name: 'House' },
+    { id: 3, name: 'Food' },
+  ],
   expenses: [
     {
       id: 0,
@@ -73,10 +78,12 @@ export const Provider = ({ children }) => {
         day: state.day,
         month: state.month,
         year: state.year,
+        categories: state.categories,
         expenses: state.expenses,
         setMonth: setMonth(dispatch),
         setYear: setYear(dispatch),
         setAsPaid: setAsPaid(dispatch),
+        addExpense: addExpense(dispatch),
       }}
     >
       {children}
