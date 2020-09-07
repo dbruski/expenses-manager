@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '../../atoms/Button/Button';
@@ -6,9 +6,17 @@ import Input from '../../atoms/Input/Input';
 import Checkbox from '../../atoms/Input/Checkbox';
 import Radio from '../../atoms/Input/Radio';
 import MonthBox from '../../atoms/MonthBox/MonthBox';
-import { months } from '../../../helpers/months';
+import { months, emptyForm } from '../../../helpers';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import { AppContext } from '../../../context';
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const StyledMonthsContainer = styled.div`
   padding: 10px 100px;
@@ -27,44 +35,60 @@ const StyledYearNav = styled.div`
   }
 `;
 
-const ExpenseForm = () => {
-  const [formValue, setFormValue] = useState({ constantly: false });
-  const [year, setYear] = useState(2020);
+const ExpenseForm = ({ closeModalFunction }) => {
+  const { year, categories, addExpense } = useContext(AppContext);
+  const [formValue, setFormValue] = useState(emptyForm);
+  const [modalYear, setModalYear] = useState(year);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addExpense({ id: Date.now(), ...formValue, inMonthAndYear });
+    closeModalFunction();
   };
 
   const handleInputChange = (e) => {
     setFormValue({
       ...formValue,
       [e.target.name]:
-        e.target.type === 'checkbox' ? e.target.checked : e.target.value,
+        e.target.type === 'checkbox'
+          ? e.target.checked
+          : e.target.type === 'radio'
+          ? handleRadioChange(e.target.value)
+          : e.target.value,
     });
-    console.log(formValue);
   };
 
-  const handleAddMonth = (month) => {
-    setInMonthAndYear([...inMonthAndYear, { month: month.number, year: year }]);
-    console.log(...inMonthAndYear);
+  const handleRadioChange = (value) => {
+    if (value && typeof value === 'string') {
+      if (value === 'true') return true;
+      else if (value === 'false') return false;
+    }
   };
 
-  const handleRemoveMonth = (month) => {
+  const handleAddMonth = (month, modalYear) => {
+    setInMonthAndYear([
+      ...inMonthAndYear,
+      { month: month.number, year: modalYear },
+    ]);
+  };
+
+  const handleRemoveMonth = (month, modalYear) => {
     setInMonthAndYear([
       ...inMonthAndYear.filter(
-        (obj) => obj.month !== month && obj.year !== year,
+        (obj) => obj.month !== month.number || obj.year !== modalYear,
       ),
     ]);
   };
   return (
-    <form autoComplete="off" onSubmit={handleSubmit}>
+    <StyledForm autoComplete="off" onSubmit={handleSubmit}>
       <Input
         placeholder="name*"
         onChange={handleInputChange}
         name="name"
         type="text"
         required
+        value={formValue.name}
       />
       <Input
         placeholder="amount*"
@@ -72,6 +96,7 @@ const ExpenseForm = () => {
         name="amount"
         type="number"
         required
+        value={formValue.amount}
       />
       <Input
         placeholder="deadline*"
@@ -79,10 +104,20 @@ const ExpenseForm = () => {
         name="deadline"
         type="number"
         required
+        value={formValue.deadline}
       />
-      <div onChange={handleInputChange}>
-        <Radio id="auto" name="type" value="auto" />
-        <Radio id="manual" name="type" value="manual" />
+      <p>category</p>
+      <select name="category" onChange={handleInputChange}>
+        {categories.map((category) => (
+          <option key={category.id} value={category.name}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+      <p>Type:</p>
+      <div onChange={handleInputChange} required>
+        <Radio id="auto" name="auto" value="true" label={'auto'} required />
+        <Radio id="manual" name="auto" value="false" label={'manual'} />
       </div>
       Constantly:
       <Checkbox
@@ -92,19 +127,19 @@ const ExpenseForm = () => {
       {formValue.constantly ? null : (
         <>
           <StyledYearNav>
-            <NavigateBeforeIcon onClick={() => setYear(year - 1)} />
-            {year}
-            <NavigateNextIcon onClick={() => setYear(year + 1)} />
+            <NavigateBeforeIcon onClick={() => setModalYear(modalYear - 1)} />
+            {modalYear}
+            <NavigateNextIcon onClick={() => setModalYear(modalYear + 1)} />
           </StyledYearNav>
           <StyledMonthsContainer>
             {months.map((month) => (
               <MonthBox
                 key={month.name}
                 month={month.number}
-                year={year}
+                year={modalYear}
                 when={inMonthAndYear}
-                addMonthFc={() => handleAddMonth(month)}
-                removeMonthFc={() => handleRemoveMonth(month)}
+                addMonthFc={() => handleAddMonth(month, modalYear)}
+                removeMonthFc={() => handleRemoveMonth(month, modalYear)}
               >
                 {month.name}
               </MonthBox>
@@ -113,9 +148,9 @@ const ExpenseForm = () => {
         </>
       )}
       <Button type="submit" primary>
-        hej
+        add expense
       </Button>
-    </form>
+    </StyledForm>
   );
 };
 

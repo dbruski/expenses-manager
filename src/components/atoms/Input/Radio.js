@@ -45,11 +45,17 @@ const StyledRadio = styled.input`
   }
 `;
 
-const Radio = ({ id, name, value }) => {
+const Radio = ({ id, name, value, label, required }) => {
   return (
     <StyledLabel>
-      <StyledRadio type="radio" value={value} id={id} name={name} />
-      {value}
+      <StyledRadio
+        type="radio"
+        value={value}
+        id={id}
+        name={name}
+        required={required}
+      />
+      {label}
       <StyledCircle />
     </StyledLabel>
   );

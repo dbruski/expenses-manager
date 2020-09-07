@@ -43,6 +43,26 @@ const Button = styled.button`
         cursor: default;
       `}
   }
+
+  ${({ addExpense }) =>
+    addExpense &&
+    css`
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50px;
+      background: ${({ theme }) => theme.primary};
+      color: ${({ theme }) => theme.white};
+      font-size: ${({ theme }) => theme.fontSize.xl};
+      transition: 0.2s ease-in-out;
+
+      :hover {
+        font-size: 64px;
+        transform: scale(1.09);
+      }
+    `}
 `;
 
 export default Button;

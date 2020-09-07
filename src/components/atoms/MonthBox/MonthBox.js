@@ -43,13 +43,13 @@ const MonthBox = ({
     // eslint-disable-next-line
   }, [when, year]);
 
-  const handleClick = () => {
+  const handleClick = (month, year) => {
     setClicked(!clicked);
-    clicked ? removeMonthFc() : addMonthFc();
+    clicked ? removeMonthFc(month, year) : addMonthFc(month, year);
   };
 
   return (
-    <StyledMonth clicked={clicked} onClick={handleClick}>
+    <StyledMonth clicked={clicked} onClick={() => handleClick(month, year)}>
       {children}
     </StyledMonth>
   );

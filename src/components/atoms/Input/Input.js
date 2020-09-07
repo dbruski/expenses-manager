@@ -7,6 +7,7 @@ const Input = styled.input`
   border: 2px solid ${({ theme }) => theme.black};
   color: ${({ theme }) => theme.black};
   padding: 5px 10px;
+  width: 180px;
   transition: 0.2s ease-in-out;
 
   :focus {

@@ -12,3 +12,13 @@ export const months = [
   { number: 10, name: 'November' },
   { number: 11, name: 'December' },
 ];
+
+export const emptyForm = {
+  name: '',
+  amount: '',
+  deadline: '',
+  category: '',
+  auto: false,
+  constantly: false,
+  paid: [],
+};
