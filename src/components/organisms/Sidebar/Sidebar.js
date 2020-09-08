@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SidebarItem from './SidebarItem';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { routes } from '../../../routes';
 import HomeIcon from '@material-ui/icons/Home';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -39,16 +39,16 @@ const StyledList = styled.ul``;
 const Sidebar = () => (
   <StyledWrapper>
     <StyledList>
-      <StyledLogo as={NavLink} exact to={routes.home}>
+      <StyledLogo as={Link} to={routes.home}>
         $
       </StyledLogo>
-      <SidebarItem as={NavLink} exact to={routes.home} label="home">
+      <SidebarItem to={routes.home} label="home">
         <HomeIcon style={{ fontSize: '60px' }} />
       </SidebarItem>
-      <SidebarItem as={NavLink} exact to={routes.home} label="chart">
+      <SidebarItem to={routes.chart} label="chart">
         <BarChartIcon style={{ fontSize: '60px' }} />
       </SidebarItem>
-      <SidebarItem as={NavLink} exact to={routes.home} label="settings">
+      <SidebarItem to={routes.home} label="settings">
         <SettingsIcon style={{ fontSize: '60px' }} />
       </SidebarItem>
     </StyledList>

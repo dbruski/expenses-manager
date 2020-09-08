@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const StyledLink = styled.li`
   position: relative;
@@ -39,17 +40,19 @@ const StyledBadge = styled.div`
   }
 `;
 
-const SidebarItem = ({ children, label }) => {
+const SidebarItem = ({ children, label, to }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <StyledLink
-      onMouseOver={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {children}
-      {isHovered && <StyledBadge>{label}</StyledBadge>}
-    </StyledLink>
+    <NavLink exact to={to}>
+      <StyledLink
+        onMouseOver={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {children}
+        {isHovered && <StyledBadge>{label}</StyledBadge>}
+      </StyledLink>
+    </NavLink>
   );
 };
 
