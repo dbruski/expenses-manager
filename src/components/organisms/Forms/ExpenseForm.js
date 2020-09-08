@@ -43,8 +43,15 @@ const ExpenseForm = ({ closeModalFunction }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addExpense({ id: Date.now(), ...formValue, inMonthAndYear });
-    closeModalFunction();
+    const form = { id: Date.now(), ...formValue, inMonthAndYear };
+    if (!form.constantly && !form.inMonthAndYear.length) {
+      return;
+    } else if (form.auto === null) {
+      return;
+    } else {
+      addExpense(form);
+      closeModalFunction();
+    }
   };
 
   const handleInputChange = (e) => {
@@ -95,6 +102,7 @@ const ExpenseForm = ({ closeModalFunction }) => {
         onChange={handleInputChange}
         name="amount"
         type="number"
+        min="1"
         required
         value={formValue.amount}
       />
@@ -103,6 +111,8 @@ const ExpenseForm = ({ closeModalFunction }) => {
         onChange={handleInputChange}
         name="deadline"
         type="number"
+        min="1"
+        max="31"
         required
         value={formValue.deadline}
       />
@@ -116,7 +126,7 @@ const ExpenseForm = ({ closeModalFunction }) => {
       </select>
       <p>Type:</p>
       <div onChange={handleInputChange} required>
-        <Radio id="auto" name="auto" value="true" label={'auto'} required />
+        <Radio id="auto" name="auto" value="true" label={'auto'} />
         <Radio id="manual" name="auto" value="false" label={'manual'} />
       </div>
       Constantly:

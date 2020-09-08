@@ -18,7 +18,7 @@ export const emptyForm = {
   amount: '',
   deadline: '',
   category: '',
-  auto: false,
+  auto: null,
   constantly: false,
   paid: [],
 };

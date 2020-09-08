@@ -73,7 +73,7 @@ const ExpenseItem = ({
       setAsPaidFc(id, month, year, amount);
     }
     //eslint-disable-next-line
-  }, [day, deadline, auto]);
+  }, [day, month, deadline, auto]);
 
   const handleDeadlineContent = (header) => {
     if (header) {
