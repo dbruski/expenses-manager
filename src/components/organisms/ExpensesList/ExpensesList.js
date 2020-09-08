@@ -13,7 +13,15 @@ const StyledList = styled.ul`
 `;
 
 const ExpensesList = () => {
-  const { day, month, year, expenses, setAsPaid } = useContext(AppContext);
+  const {
+    day,
+    month,
+    year,
+    currentMonth,
+    currentYear,
+    expenses,
+    setAsPaid,
+  } = useContext(AppContext);
 
   const constantlyExpenses = expenses.filter((expense) => expense.constantly);
 
@@ -43,7 +51,9 @@ const ExpensesList = () => {
             setAsPaidFc={setAsPaid}
             day={day}
             month={month}
+            currentMonth={currentMonth}
             year={year}
+            currentYear={currentYear}
           />
         ))}
       </StyledList>

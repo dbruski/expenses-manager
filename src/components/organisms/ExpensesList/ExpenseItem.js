@@ -63,13 +63,21 @@ const ExpenseItem = ({
   setAsPaidFc,
   day,
   month,
+  currentMonth,
   year,
+  currentYear,
 }) => {
   const checkIfPaid = () =>
     paid && paid.some((obj) => obj.month === month && obj.year === year);
 
   useEffect(() => {
-    if (day >= deadline && auto) {
+    if (
+      !checkIfPaid() &&
+      day >= deadline &&
+      auto &&
+      currentMonth === month &&
+      currentYear === year
+    ) {
       setAsPaidFc(id, month, year, amount);
     }
     //eslint-disable-next-line
