@@ -29,6 +29,7 @@ const initial =
             constantly: true,
             category: 'Car',
             paid: [],
+            added: '2020-09-08T22:00:00.000Z',
           },
           {
             id: 1,
@@ -39,6 +40,7 @@ const initial =
             constantly: true,
             category: 'House',
             paid: [],
+            added: '2020-09-08T22:00:00.000Z',
           },
           {
             id: 2,
@@ -52,6 +54,7 @@ const initial =
               { month: 8, year: 2020, amount: 1000 },
               { month: 8, year: 1234, amount: 1000 },
             ],
+            added: '2020-09-08T22:00:00.000Z',
           },
           {
             id: 3,
@@ -63,6 +66,7 @@ const initial =
             inMonthAndYear: [{ month: 9, year: 2020 }],
             category: 'Food',
             paid: [],
+            addded: '2020-09-08T22:00:00.000Z',
           },
           {
             id: 4,
@@ -77,6 +81,7 @@ const initial =
             ],
             category: 'Food',
             paid: [],
+            added: '2020-09-08T22:00:00.000Z',
           },
         ],
       }
@@ -94,8 +99,6 @@ export const Provider = ({ children }) => {
         currentYear: date.getFullYear(),
         month: date.getMonth(),
         year: date.getFullYear(),
-        currentMonth: date.getMonth(),
-        currentYear: date.getFullYear(),
         expenses: state.expenses,
         categories: state.categories,
       }),

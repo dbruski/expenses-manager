@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { AppContext } from '../../../context';
 import ExpenseItem from './ExpenseItem';
@@ -22,21 +22,39 @@ const ExpensesList = () => {
     expenses,
     setAsPaid,
   } = useContext(AppContext);
+  const [expensesInThisMonth, setExpensesInThisMonth] = useState([]);
 
-  const constantlyExpenses = expenses.filter((expense) => expense.constantly);
+  useEffect(() => {
+    const lastDayInThisMonth = new Date(year, month + 1, 0);
 
-  const specifiedExpenses = expenses
-    .filter((expense) => expense.inMonthAndYear)
-    .filter((specifiedExpense) =>
-      specifiedExpense.inMonthAndYear.some(
-        (dateObject) => dateObject.month === month && dateObject.year === year,
+    const constantlyExpenses = expenses.filter((expense) => expense.constantly);
+
+    const specifiedExpenses = expenses
+      .filter((expense) => expense.inMonthAndYear)
+      .filter((specifiedExpense) =>
+        specifiedExpense.inMonthAndYear.some(
+          (dateObject) =>
+            dateObject.month === month && dateObject.year === year,
+        ),
+      );
+
+    setExpensesInThisMonth(
+      [...constantlyExpenses, ...specifiedExpenses].filter((expense) =>
+        checkAddedDate(lastDayInThisMonth, expense.added),
       ),
     );
+  }, [month, year, expenses]);
 
-  const expensesInThisMonth = [...constantlyExpenses, ...specifiedExpenses];
+  const checkAddedDate = (last, expense) => {
+    if (last - new Date(expense) >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={() => console.log(expensesInThisMonth)}>
       <StyledList>
         <ExpenseItem header />
         {expensesInThisMonth.map((expense) => (

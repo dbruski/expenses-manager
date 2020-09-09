@@ -36,14 +36,21 @@ const StyledYearNav = styled.div`
 `;
 
 const ExpenseForm = ({ closeModalFunction }) => {
-  const { year, categories, addExpense } = useContext(AppContext);
+  const { day, currentYear, currentMonth, categories, addExpense } = useContext(
+    AppContext,
+  );
   const [formValue, setFormValue] = useState(emptyForm);
-  const [modalYear, setModalYear] = useState(year);
+  const [modalYear, setModalYear] = useState(currentYear);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = { id: Date.now(), ...formValue, inMonthAndYear };
+    const form = {
+      id: Date.now(),
+      ...formValue,
+      inMonthAndYear,
+      added: new Date(currentYear, currentMonth, day),
+    };
     if (!form.constantly && !form.inMonthAndYear.length) {
       return;
     } else if (form.auto === null) {
