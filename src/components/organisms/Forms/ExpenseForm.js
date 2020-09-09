@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '../../atoms/Button/Button';
@@ -35,6 +35,12 @@ const StyledYearNav = styled.div`
   }
 `;
 
+const StyledError = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.m};
+  color: ${({ theme }) => theme.danger};
+  padding: 5px;
+`;
+
 const ExpenseForm = ({ closeModalFunction }) => {
   const { day, currentYear, currentMonth, categories, addExpense } = useContext(
     AppContext,
@@ -42,6 +48,12 @@ const ExpenseForm = ({ closeModalFunction }) => {
   const [formValue, setFormValue] = useState(emptyForm);
   const [modalYear, setModalYear] = useState(currentYear);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
+  const [error, setError] = useState('');
+  const [todaysDate, setTodaysDate] = useState(null);
+  useEffect(() => {
+    setTodaysDate(new Date(currentYear, currentMonth, day));
+    console.log(todaysDate);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,15 +61,34 @@ const ExpenseForm = ({ closeModalFunction }) => {
       id: Date.now(),
       ...formValue,
       inMonthAndYear,
-      added: new Date(currentYear, currentMonth, day),
+      added: todaysDate,
     };
-    if (!form.constantly && !form.inMonthAndYear.length) {
-      return;
-    } else if (form.auto === null) {
-      return;
-    } else {
+    if (validate(form, todaysDate)) {
       addExpense(form);
       closeModalFunction();
+    }
+  };
+
+  const validate = (form, todaysDate) => {
+    if (form.auto === null) {
+      setError('Set the payment as auto or manual');
+      return false;
+    } else if (!form.constantly && !form.inMonthAndYear.length) {
+      setError('Select months or mark as a constant expense');
+      return false;
+    } else if (inMonthAndYear.length) {
+      const selectedDatesLastDays = inMonthAndYear.map(
+        (obj) => new Date(obj.year, obj.month + 1, 0),
+      );
+      const isPassedMonthSelected = selectedDatesLastDays.some(
+        (date) => todaysDate - date >= 0,
+      );
+      if (isPassedMonthSelected) {
+        setError('Delete months that have already passed.');
+        return false;
+      }
+    } else {
+      return true;
     }
   };
 
@@ -164,6 +195,7 @@ const ExpenseForm = ({ closeModalFunction }) => {
           </StyledMonthsContainer>
         </>
       )}
+      {error && <StyledError>{error}</StyledError>}
       <Button type="submit" primary>
         add expense
       </Button>

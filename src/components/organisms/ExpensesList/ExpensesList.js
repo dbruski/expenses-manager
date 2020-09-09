@@ -46,18 +46,13 @@ const ExpensesList = () => {
 
     setExpensesInThisMonth(
       [...constantlyExpenses, ...specifiedExpenses].filter((expense) =>
-        checkAddedDate(lastDayInThisMonth, expense.added),
+        checkIfAddedEarlier(lastDayInThisMonth, expense.added),
       ),
     );
   }, [month, year, expenses]);
 
-  const checkAddedDate = (last, expense) => {
-    if (last - new Date(expense) >= 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const checkIfAddedEarlier = (lastDayDate, expenseAddedDate) =>
+    lastDayDate - new Date(expenseAddedDate) >= 0;
 
   return (
     <StyledWrapper>
