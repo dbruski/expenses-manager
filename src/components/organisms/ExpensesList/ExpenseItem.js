@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import Modal from '../../molecules/Modal/Modal';
+import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -52,6 +54,13 @@ const StyledStatusContainer = styled.span`
   border-radius: 50px;
 `;
 
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ExpenseItem = ({
   header,
   id,
@@ -67,6 +76,15 @@ const ExpenseItem = ({
   year,
   currentYear,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentValue, setPaymentValue] = useState(amount);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setAsPaidFc(id, month, year, paymentValue);
+    setIsModalOpen(false);
+  };
+
   const checkIfPaid = () =>
     paid && paid.some((obj) => obj.month === month && obj.year === year);
 
@@ -93,6 +111,17 @@ const ExpenseItem = ({
     }
   };
 
+  const handleAmountContext = (header) => {
+    if (header) {
+      return 'amount';
+    } else if (checkIfPaid()) {
+      return paid.find((obj) => obj.month === month && obj.year === year)
+        .amount;
+    } else {
+      return amount;
+    }
+  };
+
   const handleActionContent = (header) => {
     if (header) {
       return 'actions';
@@ -102,7 +131,7 @@ const ExpenseItem = ({
       return <Button auto>auto</Button>;
     } else {
       return (
-        <Button primary onClick={() => setAsPaidFc(id, month, year, amount)}>
+        <Button primary onClick={() => setIsModalOpen(true)}>
           pay
         </Button>
       );
@@ -139,11 +168,29 @@ const ExpenseItem = ({
   return (
     <StyledExpense header={header}>
       <StyledExpenseItem nameItem>{name}</StyledExpenseItem>
-      <StyledExpenseItem>{amount}</StyledExpenseItem>
+      <StyledExpenseItem>{handleAmountContext(header)}</StyledExpenseItem>
       <StyledExpenseItem>{handleDeadlineContent(header)}</StyledExpenseItem>
       <StyledExpenseItem>{handleActionContent(header)}</StyledExpenseItem>
       <StyledExpenseItem>{handleExpenseType(header)}</StyledExpenseItem>
       <StyledExpenseItem>{handleStatus(header)}</StyledExpenseItem>
+      {isModalOpen && (
+        <Modal
+          header={`How much did you pay for ${name}`}
+          closeModalFunction={() => setIsModalOpen(false)}
+          center
+        >
+          <StyledForm onSubmit={handleSubmit}>
+            <Input
+              value={paymentValue}
+              onChange={(e) => setPaymentValue(e.target.value)}
+              type="number"
+              required
+              min="1"
+            />
+            <Button primary>accept</Button>
+          </StyledForm>
+        </Modal>
+      )}
     </StyledExpense>
   );
 };
@@ -164,7 +211,6 @@ ExpenseItem.propTypes = {
 
 ExpenseItem.defaultProps = {
   name: 'name',
-  amount: 'amount',
 };
 
 export default ExpenseItem;

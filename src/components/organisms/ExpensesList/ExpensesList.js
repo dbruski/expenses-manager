@@ -5,11 +5,17 @@ import ExpenseItem from './ExpenseItem';
 
 const StyledWrapper = styled.section`
   margin: 10vh 5vw;
+  position: relative;
 `;
 
 const StyledList = styled.ul`
   display: flex;
   flex-direction: column;
+`;
+
+const StyledInfo = styled.h1`
+  color: ${({ theme }) => theme.primary};
+  font-size: ${({ theme }) => theme.fontSize.xl};
 `;
 
 const ExpensesList = () => {
@@ -54,27 +60,31 @@ const ExpensesList = () => {
   };
 
   return (
-    <StyledWrapper onClick={() => console.log(expensesInThisMonth)}>
-      <StyledList>
-        <ExpenseItem header />
-        {expensesInThisMonth.map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            id={expense.id}
-            name={expense.name}
-            amount={expense.amount}
-            deadline={expense.deadline}
-            auto={expense.auto}
-            paid={expense.paid}
-            setAsPaidFc={setAsPaid}
-            day={day}
-            month={month}
-            currentMonth={currentMonth}
-            year={year}
-            currentYear={currentYear}
-          />
-        ))}
-      </StyledList>
+    <StyledWrapper>
+      {expensesInThisMonth.length ? (
+        <StyledList>
+          <ExpenseItem header />
+          {expensesInThisMonth.map((expense) => (
+            <ExpenseItem
+              key={expense.id}
+              id={expense.id}
+              name={expense.name}
+              amount={expense.amount}
+              deadline={expense.deadline}
+              auto={expense.auto}
+              paid={expense.paid}
+              setAsPaidFc={setAsPaid}
+              day={day}
+              month={month}
+              currentMonth={currentMonth}
+              year={year}
+              currentYear={currentYear}
+            />
+          ))}
+        </StyledList>
+      ) : (
+        <StyledInfo>No expenses in this month!</StyledInfo>
+      )}
     </StyledWrapper>
   );
 };
