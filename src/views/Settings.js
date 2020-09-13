@@ -88,7 +88,10 @@ const Settings = () => {
             header="Category management"
             closeModalFunction={() => setCategoryModal(false)}
           >
-            <CategoryForm id={clickedCategoryId} />
+            <CategoryForm
+              id={clickedCategoryId}
+              closeModalFunction={() => setCategoryModal(false)}
+            />
           </Modal>
         )}
       </>

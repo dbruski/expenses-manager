@@ -1,4 +1,12 @@
-import { SET_MONTH, SET_YEAR, SET_AS_PAID, ADD_EXPENSE } from '../consts';
+import {
+  SET_MONTH,
+  SET_YEAR,
+  SET_AS_PAID,
+  ADD_EXPENSE,
+  ADD_CATEGORY,
+  EDIT_CATEGORY,
+  DELETE_CATEGORY,
+} from '../consts';
 
 export const setMonth = (dispatch) => (month) => {
   dispatch({
@@ -25,5 +33,26 @@ export const addExpense = (dispatch) => (expense) => {
   dispatch({
     type: ADD_EXPENSE,
     payload: { expense },
+  });
+};
+
+export const addCategory = (dispatch) => (category) => {
+  dispatch({
+    type: ADD_CATEGORY,
+    payload: { category },
+  });
+};
+
+export const editCategory = (dispatch) => ({ id, name }) => {
+  dispatch({
+    type: EDIT_CATEGORY,
+    payload: { id, name },
+  });
+};
+
+export const deleteCategory = (dispatch) => (id) => {
+  dispatch({
+    type: DELETE_CATEGORY,
+    payload: { id },
   });
 };

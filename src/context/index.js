@@ -1,6 +1,14 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import reducer from '../reducer';
-import { setMonth, setYear, setAsPaid, addExpense } from '../actions';
+import {
+  setMonth,
+  setYear,
+  setAsPaid,
+  addExpense,
+  addCategory,
+  editCategory,
+  deleteCategory,
+} from '../actions';
 
 export const AppContext = createContext();
 
@@ -119,6 +127,9 @@ export const Provider = ({ children }) => {
         setYear: setYear(dispatch),
         setAsPaid: setAsPaid(dispatch),
         addExpense: addExpense(dispatch),
+        addCategory: addCategory(dispatch),
+        editCategory: editCategory(dispatch),
+        deleteCategory: deleteCategory(dispatch),
       }}
     >
       {children}

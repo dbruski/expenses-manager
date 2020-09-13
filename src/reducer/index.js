@@ -1,4 +1,12 @@
-import { SET_MONTH, SET_YEAR, SET_AS_PAID, ADD_EXPENSE } from '../consts';
+import {
+  SET_MONTH,
+  SET_YEAR,
+  SET_AS_PAID,
+  ADD_EXPENSE,
+  ADD_CATEGORY,
+  EDIT_CATEGORY,
+  DELETE_CATEGORY,
+} from '../consts';
 
 const reducer = (state, { type, payload }) => {
   switch (type) {
@@ -33,6 +41,23 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         expenses: [...state.expenses, payload.expense],
+      };
+    case ADD_CATEGORY:
+      return { ...state, categories: [...state.categories, payload.category] };
+    case EDIT_CATEGORY:
+      return {
+        ...state,
+        categories: [
+          ...state.categories.filter((category) => category.id !== payload.id),
+          { id: payload.id, name: payload.name },
+        ],
+      };
+    case DELETE_CATEGORY:
+      return {
+        ...state,
+        categories: [
+          ...state.categories.filter((category) => category.id !== payload.id),
+        ],
       };
     default:
       return state;
