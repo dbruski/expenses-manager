@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <PageTemplate>
       <>
-        <Header title="Expenses" />
+        <Header title="Expenses" withNav />
         <ExpensesList />
         {isModalOpen && (
           <Modal

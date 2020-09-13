@@ -16,7 +16,7 @@ const Chart = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    const categoriesData = categories.map((category) => ({
+    let categoriesData = categories.map((category) => ({
       name: category.name,
       amount: 0,
     }));
@@ -58,7 +58,7 @@ const Chart = () => {
   return (
     <PageTemplate>
       <>
-        <Header title="Chart" />
+        <Header title="Chart" withNav />
         <StyledContainer>
           <Bar data={data} options={options} />
         </StyledContainer>
