@@ -63,6 +63,21 @@ const Button = styled.button`
         transform: scale(1.09);
       }
     `}
+
+  ${({ deleteButton }) =>
+    deleteButton &&
+    css`
+      background: ${({ theme }) => theme.white};
+      color: ${({ theme }) => theme.danger};
+      border-color: ${({ theme }) => theme.danger};
+
+      :hover {
+        background: ${({ theme }) => theme.danger};
+        color: ${({ theme }) => theme.white};
+        border-color: ${({ theme }) => theme.white};
+        transform: scale(1.19);
+      }
+    `}
 `;
 
 export default Button;

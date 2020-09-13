@@ -27,7 +27,7 @@ const StyledDateContainer = styled.div`
   align-items: center;
 `;
 
-const Header = ({ title }) => {
+const Header = ({ title, withNav }) => {
   const { month, year, setMonth, setYear } = useContext(AppContext);
   const handleNextMonth = () => {
     if (month + 1 < 12) {
@@ -49,19 +49,21 @@ const Header = ({ title }) => {
   return (
     <StyledWrapper>
       <StyledHeader>{title}</StyledHeader>
-      <StyledDateContainer>
-        <NavigateBeforeIcon
-          fontSize="large"
-          onClick={handlePrevMonth}
-          style={{ cursor: 'pointer' }}
-        />
-        {month !== undefined ? `${months[month].name} ${year}` : null}
-        <NavigateNextIcon
-          fontSize="large"
-          onClick={handleNextMonth}
-          style={{ cursor: 'pointer' }}
-        />
-      </StyledDateContainer>
+      {withNav && (
+        <StyledDateContainer>
+          <NavigateBeforeIcon
+            fontSize="large"
+            onClick={handlePrevMonth}
+            style={{ cursor: 'pointer' }}
+          />
+          {month !== undefined ? `${months[month].name} ${year}` : null}
+          <NavigateNextIcon
+            fontSize="large"
+            onClick={handleNextMonth}
+            style={{ cursor: 'pointer' }}
+          />
+        </StyledDateContainer>
+      )}
     </StyledWrapper>
   );
 };
