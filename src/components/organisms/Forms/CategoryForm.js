@@ -13,7 +13,6 @@ const StyledForm = styled.form`
 
 const ButotnsContainer = styled.div`
   display: flex;
-  /* justify-content: space-between; */
   justify-content: space-around;
   align-items: center;
   width: 40%;
@@ -28,7 +27,6 @@ const CategoryForm = ({ id, closeModalFunction }) => {
   const { categories, addCategory, editCategory, deleteCategory } = useContext(
     AppContext,
   );
-  const [selectedCategory, setSelecetedCategory] = useState(null);
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -36,34 +34,41 @@ const CategoryForm = ({ id, closeModalFunction }) => {
       const selectedCategory = categories.find(
         (category) => category.id === id,
       );
-      setSelecetedCategory(selectedCategory);
       setInputValue(selectedCategory.name);
     }
   }, [id]);
 
   const handleAddCategory = (e) => {
     e.preventDefault();
-    addCategory({ id: Date.now(), name: inputValue });
-    closeModalFunction();
+    if (inputValue) {
+      addCategory({ id: Date.now(), name: inputValue });
+      closeModalFunction();
+    }
   };
 
   const handleEditCategory = (e) => {
     e.preventDefault();
-    editCategory({ id, name: inputValue });
-    closeModalFunction();
+    if (inputValue) {
+      editCategory({ id, name: inputValue });
+      closeModalFunction();
+    }
   };
 
   const handleDeleteCategory = (e) => {
     e.preventDefault();
-    deleteCategory(id);
-    closeModalFunction();
+    if (inputValue) {
+      deleteCategory(id);
+      closeModalFunction();
+    }
   };
 
   return (
     <StyledForm>
+      <label htmlFor="name">category name</label>
       <Input
         type="text"
-        required
+        name="name"
+        id="name"
         placeholder="category name*"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

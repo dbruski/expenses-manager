@@ -41,10 +41,15 @@ const StyledError = styled.p`
   padding: 5px;
 `;
 
-const ExpenseForm = ({ closeModalFunction }) => {
-  const { day, currentYear, currentMonth, categories, addExpense } = useContext(
-    AppContext,
-  );
+const ExpenseForm = ({ id, closeModalFunction }) => {
+  const {
+    day,
+    currentYear,
+    currentMonth,
+    categories,
+    expenses,
+    addExpense,
+  } = useContext(AppContext);
   const [formValue, setFormValue] = useState(emptyForm);
   const [modalYear, setModalYear] = useState(currentYear);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
@@ -52,7 +57,11 @@ const ExpenseForm = ({ closeModalFunction }) => {
   const [todaysDate, setTodaysDate] = useState(null);
   useEffect(() => {
     setTodaysDate(new Date(currentYear, currentMonth, day));
-    console.log(todaysDate);
+    if (id) {
+      const selectedExpense = expenses.find((expense) => expense.id === id);
+      setFormValue(selectedExpense);
+      setInMonthAndYear(selectedExpense.inMonthAndYear);
+    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -127,26 +136,32 @@ const ExpenseForm = ({ closeModalFunction }) => {
   };
   return (
     <StyledForm autoComplete="off" onSubmit={handleSubmit}>
+      <label htmlFor="name">name</label>
       <Input
         placeholder="name*"
         onChange={handleInputChange}
+        id="name"
         name="name"
         type="text"
         required
         value={formValue.name}
       />
+      <label htmlFor="amount">amount</label>
       <Input
         placeholder="amount*"
         onChange={handleInputChange}
+        id="amount"
         name="amount"
         type="number"
         min="1"
         required
         value={formValue.amount}
       />
+      <label htmlFor="deadline">deadline</label>
       <Input
         placeholder="deadline*"
         onChange={handleInputChange}
+        id="deadline"
         name="deadline"
         type="number"
         min="1"
@@ -154,18 +169,32 @@ const ExpenseForm = ({ closeModalFunction }) => {
         required
         value={formValue.deadline}
       />
-      <p>category</p>
-      <select name="category" onChange={handleInputChange}>
+      <label htmlFor="category">category</label>
+      <select name="category" id="category" onChange={handleInputChange}>
         {categories.map((category) => (
           <option key={category.id} value={category.name}>
             {category.name}
           </option>
         ))}
       </select>
-      <p>Type:</p>
-      <div onChange={handleInputChange} required>
-        <Radio id="auto" name="auto" value="true" label={'auto'} />
-        <Radio id="manual" name="auto" value="false" label={'manual'} />
+      <label htmlFor="auto">type</label>
+      <div required>
+        <Radio
+          id="auto"
+          name="auto"
+          value="true"
+          label={'auto'}
+          onChange={handleInputChange}
+          checked={formValue.auto === true}
+        />
+        <Radio
+          id="manual"
+          name="auto"
+          value="false"
+          label={'manual'}
+          onChange={handleInputChange}
+          checked={formValue.auto === false}
+        />
       </div>
       Constantly:
       <Checkbox
