@@ -41,6 +41,14 @@ const StyledError = styled.p`
   padding: 5px;
 `;
 
+const StyledButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20%;
+  margin: 10px auto;
+`;
+
 const ExpenseForm = ({ id, closeModalFunction }) => {
   const {
     day,
@@ -49,8 +57,14 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     categories,
     expenses,
     addExpense,
+    editExpense,
+    deleteExpenseSoft,
+    deleteExpenseHard,
   } = useContext(AppContext);
-  const [formValue, setFormValue] = useState(emptyForm);
+  const [formValue, setFormValue] = useState({
+    ...emptyForm,
+    category: categories[0].name,
+  });
   const [modalYear, setModalYear] = useState(currentYear);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
   const [error, setError] = useState('');
@@ -78,6 +92,17 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     }
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    deleteExpenseSoft(formValue);
+    closeModalFunction();
+  };
+  const handleHardDelete = (e) => {
+    e.preventDefault();
+    deleteExpenseHard(id);
+    closeModalFunction();
+  };
+
   const validate = (form, todaysDate) => {
     if (form.auto === null) {
       setError('Set the payment as auto or manual');
@@ -85,19 +110,20 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     } else if (!form.constantly && !form.inMonthAndYear.length) {
       setError('Select months or mark as a constant expense');
       return false;
-    } else if (inMonthAndYear.length) {
+    } else {
       const selectedDatesLastDays = inMonthAndYear.map(
         (obj) => new Date(obj.year, obj.month + 1, 0),
       );
       const isPassedMonthSelected = selectedDatesLastDays.some(
         (date) => todaysDate - date >= 0,
       );
+
       if (isPassedMonthSelected) {
         setError('Delete months that have already passed.');
         return false;
+      } else {
+        return true;
       }
-    } else {
-      return true;
     }
   };
 
@@ -135,7 +161,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     ]);
   };
   return (
-    <StyledForm autoComplete="off" onSubmit={handleSubmit}>
+    <StyledForm autoComplete="off">
       <label htmlFor="name">name</label>
       <Input
         placeholder="name*"
@@ -225,9 +251,27 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
         </>
       )}
       {error && <StyledError>{error}</StyledError>}
-      <Button type="submit" primary>
-        add expense
-      </Button>
+      <StyledButtonsContainer>
+        {id ? (
+          <Button type="submit" onClick={() => editExpense(formValue)} primary>
+            edit
+          </Button>
+        ) : (
+          <Button type="submit" primary onClick={handleSubmit}>
+            add expense
+          </Button>
+        )}
+        {id && (
+          <>
+            <Button deleteButton onClick={handleDelete}>
+              softdelete
+            </Button>
+            <Button deleteButton onClick={handleHardDelete}>
+              hard delete
+            </Button>
+          </>
+        )}
+      </StyledButtonsContainer>
     </StyledForm>
   );
 };

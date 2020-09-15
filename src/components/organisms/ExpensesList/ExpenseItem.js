@@ -81,7 +81,7 @@ const ExpenseItem = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setAsPaidFc(id, month, year, paymentValue);
+    setAsPaidFc(id, month, year, parseInt(paymentValue));
     setIsModalOpen(false);
   };
 

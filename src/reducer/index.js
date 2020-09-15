@@ -3,6 +3,9 @@ import {
   SET_YEAR,
   SET_AS_PAID,
   ADD_EXPENSE,
+  EDIT_EXPENSE,
+  DELETE_EXPENSE_SOFT,
+  DELETE_EXPENSE_HARD,
   ADD_CATEGORY,
   EDIT_CATEGORY,
   DELETE_CATEGORY,
@@ -41,6 +44,33 @@ const reducer = (state, { type, payload }) => {
       return {
         ...state,
         expenses: [...state.expenses, payload.expense],
+      };
+    case EDIT_EXPENSE:
+      return {
+        ...state,
+        expenses: [
+          ...state.expenses.filter(
+            (expense) => expense.id !== payload.expense.id,
+          ),
+          payload.expense,
+        ],
+      };
+    case DELETE_EXPENSE_SOFT:
+      return {
+        ...state,
+        expenses: [
+          ...state.expenses.filter(
+            (expense) => expense.id !== payload.expense.id,
+          ),
+          { ...payload.expense, constantly: false, inMonthAndYear: [] },
+        ],
+      };
+    case DELETE_EXPENSE_HARD:
+      return {
+        ...state,
+        expenses: [
+          ...state.expenses.filter((expense) => expense.id !== payload.id),
+        ],
       };
     case ADD_CATEGORY:
       return { ...state, categories: [...state.categories, payload.category] };

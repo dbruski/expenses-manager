@@ -5,6 +5,7 @@ import PageTemplate from '../templates/PageTemplate';
 import Header from '../components/organisms/Header/Header';
 import Modal from '../components/molecules/Modal/Modal';
 import CategoryForm from '../components/organisms/Forms/CategoryForm';
+import ExpenseForm from '../components/organisms/Forms/ExpenseForm';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ const StyledCategory = styled.div`
 
   :hover {
     transform: scale(1.19);
-    background: ${({ theme }) => theme.grey};
+    background: ${({ theme }) => theme.grey50};
   }
 `;
 
@@ -57,6 +58,8 @@ const Settings = () => {
   const { expenses, categories } = useContext(AppContext);
   const [categoryModal, setCategoryModal] = useState(false);
   const [clickedCategoryId, setClickedCategoryId] = useState(null);
+  const [expenseModal, setExpenseModal] = useState(false);
+  const [clickedExpenseId, setClickedExpenseId] = useState(null);
 
   const handleCategoryClick = (id) => {
     setClickedCategoryId(id);
@@ -66,6 +69,11 @@ const Settings = () => {
   const handleAddCategoryClick = () => {
     setClickedCategoryId(null);
     setCategoryModal(true);
+  };
+
+  const handleExpenseClick = (id) => {
+    setClickedExpenseId(id);
+    setExpenseModal(true);
   };
 
   return (
@@ -83,6 +91,14 @@ const Settings = () => {
             +
           </StyledCategory>
         </StyledContainer>
+        <StyledContainer>
+          <StyledHeading>expenses</StyledHeading>
+          {expenses.map(({ id, name }) => (
+            <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
+              {name}
+            </StyledCategory>
+          ))}
+        </StyledContainer>
         {categoryModal && (
           <Modal
             header="Category management"
@@ -91,6 +107,17 @@ const Settings = () => {
             <CategoryForm
               id={clickedCategoryId}
               closeModalFunction={() => setCategoryModal(false)}
+            />
+          </Modal>
+        )}
+        {expenseModal && (
+          <Modal
+            header="Expense management"
+            closeModalFunction={() => setExpenseModal(false)}
+          >
+            <ExpenseForm
+              id={clickedExpenseId}
+              closeModalFunction={() => setExpenseModal(false)}
             />
           </Modal>
         )}

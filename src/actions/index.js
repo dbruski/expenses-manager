@@ -3,6 +3,9 @@ import {
   SET_YEAR,
   SET_AS_PAID,
   ADD_EXPENSE,
+  EDIT_EXPENSE,
+  DELETE_EXPENSE_SOFT,
+  DELETE_EXPENSE_HARD,
   ADD_CATEGORY,
   EDIT_CATEGORY,
   DELETE_CATEGORY,
@@ -33,6 +36,27 @@ export const addExpense = (dispatch) => (expense) => {
   dispatch({
     type: ADD_EXPENSE,
     payload: { expense },
+  });
+};
+
+export const editExpense = (dispatch) => (expense) => {
+  dispatch({
+    type: EDIT_EXPENSE,
+    payload: { expense },
+  });
+};
+
+export const deleteExpenseSoft = (dispatch) => (expense) => {
+  dispatch({
+    type: DELETE_EXPENSE_SOFT,
+    payload: { expense },
+  });
+};
+
+export const deleteExpenseHard = (dispatch) => (id) => {
+  dispatch({
+    type: DELETE_EXPENSE_HARD,
+    payload: { id },
   });
 };
 
