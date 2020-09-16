@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { AppContext } from '../context';
 import PageTemplate from '../templates/PageTemplate';
@@ -60,6 +60,22 @@ const Settings = () => {
   const [clickedCategoryId, setClickedCategoryId] = useState(null);
   const [expenseModal, setExpenseModal] = useState(false);
   const [clickedExpenseId, setClickedExpenseId] = useState(null);
+  const [activeExpenses, setActiveExpenses] = useState([]);
+  const [unusedExpenses, setUnusedExpenses] = useState([]);
+
+  useEffect(() => {
+    setActiveExpenses(
+      expenses.filter(
+        (expense) => expense.constantly || expense.inMonthAndYear.length,
+      ),
+    );
+
+    setUnusedExpenses(
+      expenses.filter(
+        (expense) => !expense.constantly && !expense.inMonthAndYear.length,
+      ),
+    );
+  }, [expenses]);
 
   const handleCategoryClick = (id) => {
     setClickedCategoryId(id);
@@ -91,14 +107,28 @@ const Settings = () => {
             +
           </StyledCategory>
         </StyledContainer>
-        <StyledContainer>
-          <StyledHeading>expenses</StyledHeading>
-          {expenses.map(({ id, name }) => (
-            <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
-              {name}
-            </StyledCategory>
-          ))}
-        </StyledContainer>
+        {activeExpenses && (
+          <StyledContainer>
+            <StyledHeading>expenses</StyledHeading>
+            {activeExpenses.map(({ id, name }) => (
+              <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
+                {name}
+              </StyledCategory>
+            ))}
+          </StyledContainer>
+        )}
+
+        {unusedExpenses && (
+          <StyledContainer>
+            <StyledHeading>unused expenses</StyledHeading>
+            {unusedExpenses.map(({ id, name }) => (
+              <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
+                {name}
+              </StyledCategory>
+            ))}
+          </StyledContainer>
+        )}
+
         {categoryModal && (
           <Modal
             header="Category management"

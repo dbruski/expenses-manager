@@ -45,9 +45,11 @@ const ExpensesList = () => {
       );
 
     setExpensesInThisMonth(
-      [...constantlyExpenses, ...specifiedExpenses].filter((expense) =>
-        checkIfAddedEarlier(lastDayInThisMonth, expense.added),
-      ),
+      [...constantlyExpenses, ...specifiedExpenses]
+        .filter((expense) =>
+          checkIfAddedEarlier(lastDayInThisMonth, expense.added),
+        )
+        .sort((a, b) => a.deadline - b.deadline),
     );
   }, [month, year, expenses]);
 
