@@ -69,12 +69,17 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
   const [error, setError] = useState('');
   const [todaysDate, setTodaysDate] = useState(null);
+  // const [defaultCategory, setDefaultCategory] = useState('');
+  const [selectedExpense] = useState(
+    expenses.find((expense) => expense.id === id),
+  );
 
   useEffect(() => {
     setTodaysDate(new Date(currentYear, currentMonth, day));
     if (id) {
-      const selectedExpense = expenses.find((expense) => expense.id === id);
-      setFormValue(selectedExpense);
+      setFormValue({
+        ...selectedExpense,
+      });
       setInMonthAndYear(selectedExpense.inMonthAndYear);
     }
   }, [id, currentYear, currentMonth, day]);
@@ -84,6 +89,9 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     const form = {
       id: Date.now(),
       ...formValue,
+      category: categories.find(
+        (category) => category.name === formValue.category,
+      ),
       inMonthAndYear,
       added: todaysDate,
     };
@@ -93,6 +101,12 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     }
   };
 
+  const handleEdit = (e) => {
+    console.log(formValue);
+    e.preventDefault();
+    editExpense(formValue);
+    closeModalFunction();
+  };
   const handleDelete = (e) => {
     e.preventDefault();
     deleteExpenseSoft(formValue);
@@ -147,6 +161,13 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     }
   };
 
+  const handleCategoryChange = (e) => {
+    setFormValue({
+      ...formValue,
+      category: categories.find((category) => category.name === e.target.value),
+    });
+  };
+
   const handleAddMonth = (month, modalYear) => {
     setInMonthAndYear([
       ...inMonthAndYear,
@@ -197,7 +218,13 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
         value={formValue.deadline}
       />
       <label htmlFor="category">category</label>
-      <select name="category" id="category" onChange={handleInputChange}>
+      <select
+        name="category"
+        id="category"
+        // onChange={handleInputChange}
+        onChange={handleCategoryChange}
+        defaultValue={selectedExpense.category.name}
+      >
         {categories.map((category) => (
           <option key={category.id} value={category.name}>
             {category.name}
@@ -254,7 +281,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       {error && <StyledError>{error}</StyledError>}
       <StyledButtonsContainer>
         {id ? (
-          <Button type="submit" onClick={() => editExpense(formValue)} primary>
+          <Button type="submit" onClick={handleEdit} primary>
             edit
           </Button>
         ) : (
