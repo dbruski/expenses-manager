@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { AppContext } from '../../../context';
 import Button from '../../atoms/Button/Button';
@@ -96,6 +97,11 @@ const CategoryForm = ({ id, closeModalFunction }) => {
       )}
     </StyledForm>
   );
+};
+
+CategoryForm.propTypes = {
+  id: PropTypes.number,
+  closeModalFunction: PropTypes.func.isRequired,
 };
 
 export default CategoryForm;

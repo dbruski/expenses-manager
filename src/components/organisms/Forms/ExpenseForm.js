@@ -69,6 +69,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
   const [error, setError] = useState('');
   const [todaysDate, setTodaysDate] = useState(null);
+
   useEffect(() => {
     setTodaysDate(new Date(currentYear, currentMonth, day));
     if (id) {
@@ -76,7 +77,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       setFormValue(selectedExpense);
       setInMonthAndYear(selectedExpense.inMonthAndYear);
     }
-  }, []);
+  }, [id, currentYear, currentMonth, day]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -274,6 +275,11 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       </StyledButtonsContainer>
     </StyledForm>
   );
+};
+
+ExpenseForm.propTypes = {
+  id: PropTypes.number,
+  closeModalFunction: PropTypes.func.isRequired,
 };
 
 export default ExpenseForm;
