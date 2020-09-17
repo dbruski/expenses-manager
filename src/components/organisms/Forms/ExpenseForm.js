@@ -10,6 +10,7 @@ import { months, emptyForm } from '../../../helpers';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { AppContext } from '../../../context';
+import { NO_CATEGORY } from '../../../consts';
 
 const StyledForm = styled.form`
   display: flex;
@@ -39,6 +40,7 @@ const StyledError = styled.p`
   font-size: ${({ theme }) => theme.fontSize.m};
   color: ${({ theme }) => theme.danger};
   padding: 5px;
+  text-align: center;
 `;
 
 const StyledButtonsContainer = styled.div`
@@ -61,15 +63,11 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     deleteExpenseSoft,
     deleteExpenseHard,
   } = useContext(AppContext);
-  const [formValue, setFormValue] = useState({
-    ...emptyForm,
-    category: categories[0].name,
-  });
+  const [formValue, setFormValue] = useState({ ...emptyForm });
   const [modalYear, setModalYear] = useState(currentYear);
   const [inMonthAndYear, setInMonthAndYear] = useState([]);
   const [error, setError] = useState('');
   const [todaysDate, setTodaysDate] = useState(null);
-  // const [defaultCategory, setDefaultCategory] = useState('');
   const [selectedExpense] = useState(
     expenses.find((expense) => expense.id === id),
   );
@@ -77,10 +75,12 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
   useEffect(() => {
     setTodaysDate(new Date(currentYear, currentMonth, day));
     if (id) {
+      setInMonthAndYear(selectedExpense.inMonthAndYear);
       setFormValue({
         ...selectedExpense,
+        category: selectedExpense.category.name || NO_CATEGORY,
+        inMonthAndYear,
       });
-      setInMonthAndYear(selectedExpense.inMonthAndYear);
     }
   }, [id, currentYear, currentMonth, day]);
 
@@ -102,10 +102,15 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
   };
 
   const handleEdit = (e) => {
-    console.log(formValue);
     e.preventDefault();
-    editExpense(formValue);
-    closeModalFunction();
+    const form = {
+      ...formValue,
+      inMonthAndYear,
+    };
+    if (validate(form, todaysDate)) {
+      editExpense(form);
+      closeModalFunction();
+    }
   };
   const handleDelete = (e) => {
     e.preventDefault();
@@ -124,6 +129,9 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       return false;
     } else if (!form.constantly && !form.inMonthAndYear.length) {
       setError('Select months or mark as a constant expense');
+      return false;
+    } else if (form.category === 'NO_CATEGORY') {
+      setError('Select category');
       return false;
     } else {
       const selectedDatesLastDays = inMonthAndYear.map(
@@ -182,6 +190,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       ),
     ]);
   };
+
   return (
     <StyledForm autoComplete="off">
       <label htmlFor="name">name</label>
@@ -217,20 +226,30 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
         required
         value={formValue.deadline}
       />
-      <label htmlFor="category">category</label>
-      <select
-        name="category"
-        id="category"
-        // onChange={handleInputChange}
-        onChange={handleCategoryChange}
-        defaultValue={selectedExpense.category.name}
-      >
-        {categories.map((category) => (
-          <option key={category.id} value={category.name}>
-            {category.name}
-          </option>
-        ))}
-      </select>
+      {categories.length ? (
+        <>
+          <label htmlFor="category">category</label>
+          <select
+            name="category"
+            id="category"
+            onChange={handleCategoryChange}
+            defaultValue={
+              selectedExpense?.category.name
+                ? selectedExpense?.category.name
+                : NO_CATEGORY
+            }
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+            {selectedExpense?.category.name ? null : (
+              <option value={NO_CATEGORY}>no category</option>
+            )}
+          </select>
+        </>
+      ) : null}
       <label htmlFor="auto">type</label>
       <div required>
         <Radio
@@ -279,27 +298,33 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
         </>
       )}
       {error && <StyledError>{error}</StyledError>}
-      <StyledButtonsContainer>
-        {id ? (
-          <Button type="submit" onClick={handleEdit} primary>
-            edit
-          </Button>
-        ) : (
-          <Button type="submit" primary onClick={handleSubmit}>
-            add expense
-          </Button>
-        )}
-        {id && (
-          <>
-            <Button deleteButton onClick={handleDelete}>
-              softdelete
+      {categories.length ? (
+        <StyledButtonsContainer>
+          {id ? (
+            <Button type="submit" onClick={handleEdit} primary>
+              edit
             </Button>
-            <Button deleteButton onClick={handleHardDelete}>
-              hard delete
+          ) : (
+            <Button type="submit" primary onClick={handleSubmit}>
+              add expense
             </Button>
-          </>
-        )}
-      </StyledButtonsContainer>
+          )}
+          {id && (
+            <>
+              <Button deleteButton onClick={handleDelete}>
+                softdelete
+              </Button>
+              <Button deleteButton onClick={handleHardDelete}>
+                hard delete
+              </Button>
+            </>
+          )}
+        </StyledButtonsContainer>
+      ) : (
+        <StyledError>
+          Add categories before {id ? 'editing' : 'adding'} an expense
+        </StyledError>
+      )}
     </StyledForm>
   );
 };
