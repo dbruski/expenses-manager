@@ -77,6 +77,15 @@ const reducer = (state, { type, payload }) => {
     case EDIT_CATEGORY:
       return {
         ...state,
+        expenses: [
+          ...state.expenses.map((expense) => {
+            if (expense.category.id === payload.id) {
+              expense.category.name = payload.name;
+              return expense;
+            }
+            return expense;
+          }),
+        ],
         categories: [
           ...state.categories.filter((category) => category.id !== payload.id),
           { id: payload.id, name: payload.name },
@@ -85,6 +94,15 @@ const reducer = (state, { type, payload }) => {
     case DELETE_CATEGORY:
       return {
         ...state,
+        expenses: [
+          ...state.expenses.map((expense) => {
+            if (expense.category.id === payload.id) {
+              expense.category = {};
+              return expense;
+            }
+            return expense;
+          }),
+        ],
         categories: [
           ...state.categories.filter((category) => category.id !== payload.id),
         ],

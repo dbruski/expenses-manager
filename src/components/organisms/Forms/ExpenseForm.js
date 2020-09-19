@@ -75,7 +75,9 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
   useEffect(() => {
     setTodaysDate(new Date(currentYear, currentMonth, day));
     if (id) {
-      setInMonthAndYear(selectedExpense.inMonthAndYear);
+      setInMonthAndYear(
+        selectedExpense.inMonthAndYear ? selectedExpense.inMonthAndYear : [],
+      );
       setFormValue({
         ...selectedExpense,
         category: selectedExpense.category.name || NO_CATEGORY,
@@ -134,7 +136,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       setError('Select category');
       return false;
     } else {
-      const selectedDatesLastDays = inMonthAndYear.map(
+      const selectedDatesLastDays = form.inMonthAndYear.map(
         (obj) => new Date(obj.year, obj.month + 1, 0),
       );
       const isPassedMonthSelected = selectedDatesLastDays.some(

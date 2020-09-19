@@ -37,7 +37,7 @@ const CategoryForm = ({ id, closeModalFunction }) => {
       );
       setInputValue(selectedCategory.name);
     }
-  }, [id]);
+  }, [id, categories]);
 
   const handleAddCategory = (e) => {
     e.preventDefault();

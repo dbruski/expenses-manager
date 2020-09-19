@@ -48,7 +48,7 @@ const Sidebar = () => (
       <SidebarItem to={routes.chart} label="chart">
         <BarChartIcon style={{ fontSize: '60px' }} />
       </SidebarItem>
-      <SidebarItem to={routes.home} label="settings">
+      <SidebarItem to={routes.settings} label="settings">
         <SettingsIcon style={{ fontSize: '60px' }} />
       </SidebarItem>
     </StyledList>

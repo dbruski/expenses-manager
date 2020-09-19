@@ -2,6 +2,7 @@ export const theme = {
   primary: '#008000',
   primary100: '#006400',
   danger: '#800000',
+  grey50: '#eeeeee',
   grey100: '#dedede',
   grey150: '#ababab',
   grey200: '#848484',

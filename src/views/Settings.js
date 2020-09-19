@@ -18,6 +18,8 @@ const StyledContainer = styled.div`
 `;
 
 const StyledHeading = styled.div`
+  color: ${({ theme }) => theme.white};
+  font-weight: ${({ theme }) => theme.bold};
   background: ${({ theme }) => theme.primary};
   padding: 10px;
   font-size: ${({ theme }) => theme.fontSize.l};
@@ -54,6 +56,12 @@ const StyledCategory = styled.div`
   }
 `;
 
+const StyledWarning = styled.p`
+  color: ${({ theme }) => theme.danger};
+  font-size: ${({ theme }) => theme.fontSize.m};
+  padding: 0 10vh;
+`;
+
 const Settings = () => {
   const { expenses, categories } = useContext(AppContext);
   const [categoryModal, setCategoryModal] = useState(false);
@@ -62,6 +70,7 @@ const Settings = () => {
   const [clickedExpenseId, setClickedExpenseId] = useState(null);
   const [activeExpenses, setActiveExpenses] = useState([]);
   const [unusedExpenses, setUnusedExpenses] = useState([]);
+  const [expensesWithoutCategory, setExpensesWithoutCategory] = useState([]);
 
   useEffect(() => {
     setActiveExpenses(
@@ -74,6 +83,10 @@ const Settings = () => {
       expenses.filter(
         (expense) => !expense.constantly && !expense.inMonthAndYear.length,
       ),
+    );
+
+    setExpensesWithoutCategory(
+      expenses.filter((expense) => !expense.category.name),
     );
   }, [expenses]);
 
@@ -97,7 +110,7 @@ const Settings = () => {
       <>
         <Header title="Settings" />
         <StyledContainer>
-          <StyledHeading>categories</StyledHeading>
+          <StyledHeading>Categories</StyledHeading>
           {categories.map(({ id, name }) => (
             <StyledCategory key={id} onClick={() => handleCategoryClick(id)}>
               {name}
@@ -107,9 +120,19 @@ const Settings = () => {
             +
           </StyledCategory>
         </StyledContainer>
+        {expensesWithoutCategory && (
+          <StyledWarning>
+            The following expense(s):
+            {expensesWithoutCategory.map((expense) => (
+              <span key={expense.id}> {expense.name}</span>
+            ))}
+            {expensesWithoutCategory > 1 ? " don't" : " doesn't"} have specified
+            category. Select the category to have proper data on chart
+          </StyledWarning>
+        )}
         {activeExpenses && (
           <StyledContainer>
-            <StyledHeading>expenses</StyledHeading>
+            <StyledHeading>Active expenses</StyledHeading>
             {activeExpenses.map(({ id, name }) => (
               <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
                 {name}
@@ -120,7 +143,7 @@ const Settings = () => {
 
         {unusedExpenses && (
           <StyledContainer>
-            <StyledHeading>unused expenses</StyledHeading>
+            <StyledHeading>Unused expenses</StyledHeading>
             {unusedExpenses.map(({ id, name }) => (
               <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
                 {name}
