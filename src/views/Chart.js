@@ -25,7 +25,8 @@ const Chart = () => {
       paid.map((payment) => {
         if (payment.month === month && payment.year === year) {
           categoriesData.map((obj) => {
-            if (obj.name === category) {
+            console.log(obj, category);
+            if (obj.name === category.name) {
               obj.amount += payment.amount;
             }
           });
@@ -53,6 +54,15 @@ const Chart = () => {
       fontSize: 25,
     },
     legend: { display: false },
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
   };
 
   return (

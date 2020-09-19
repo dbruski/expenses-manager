@@ -91,9 +91,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     const form = {
       id: Date.now(),
       ...formValue,
-      category: categories.find(
-        (category) => category.name === formValue.category,
-      ),
+      deadline: Number(formValue.deadline),
       inMonthAndYear,
       added: todaysDate,
     };
@@ -107,6 +105,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
     e.preventDefault();
     const form = {
       ...formValue,
+      deadline: Number(formValue.deadline),
       inMonthAndYear,
     };
     if (validate(form, todaysDate)) {
