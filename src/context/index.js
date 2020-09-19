@@ -94,6 +94,18 @@ const initial =
             paid: [],
             added: '2020-09-08T22:00:00.000Z',
           },
+          {
+            id: 5,
+            name: 'zaplacony wrzesien',
+            amount: 999,
+            auto: false,
+            deadline: 20,
+            constantly: false,
+            inMonthAndYear: [],
+            category: { id: 3, name: 'Food' },
+            paid: [{ month: 8, year: 2020, amount: 999 }],
+            added: '2020-09-08T22:00:00.000Z',
+          },
         ],
       }
     : JSON.parse(localStorage.getItem('expenses-manager-state'));

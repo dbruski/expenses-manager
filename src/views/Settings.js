@@ -120,7 +120,7 @@ const Settings = () => {
             +
           </StyledCategory>
         </StyledContainer>
-        {expensesWithoutCategory && (
+        {expensesWithoutCategory.length ? (
           <StyledWarning>
             The following expense(s):
             {expensesWithoutCategory.map((expense) => (
@@ -129,8 +129,8 @@ const Settings = () => {
             {expensesWithoutCategory > 1 ? " don't" : " doesn't"} have specified
             category. Select the category to have proper data on chart
           </StyledWarning>
-        )}
-        {activeExpenses && (
+        ) : null}
+        {activeExpenses.length ? (
           <StyledContainer>
             <StyledHeading>Active expenses</StyledHeading>
             {activeExpenses.map(({ id, name }) => (
@@ -139,9 +139,9 @@ const Settings = () => {
               </StyledCategory>
             ))}
           </StyledContainer>
-        )}
+        ) : null}
 
-        {unusedExpenses && (
+        {unusedExpenses.length ? (
           <StyledContainer>
             <StyledHeading>Unused expenses</StyledHeading>
             {unusedExpenses.map(({ id, name }) => (
@@ -150,7 +150,7 @@ const Settings = () => {
               </StyledCategory>
             ))}
           </StyledContainer>
-        )}
+        ) : null}
 
         {categoryModal && (
           <Modal

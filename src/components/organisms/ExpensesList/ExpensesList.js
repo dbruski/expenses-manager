@@ -43,9 +43,21 @@ const ExpensesList = () => {
             dateObject.month === month && dateObject.year === year,
         ),
       );
+    const paidExpenses = expenses.filter((expense) =>
+      expense.paid.some(
+        (paymentHistory) =>
+          paymentHistory.month === month && paymentHistory.year === year,
+      ),
+    );
 
     setExpensesInThisMonth(
-      [...constantlyExpenses, ...specifiedExpenses]
+      [
+        ...new Set([
+          ...constantlyExpenses,
+          ...specifiedExpenses,
+          ...paidExpenses,
+        ]),
+      ]
         .filter((expense) =>
           checkIfAddedEarlier(lastDayInThisMonth, expense.added),
         )
