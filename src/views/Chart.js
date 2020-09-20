@@ -16,16 +16,16 @@ const Chart = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    let categoriesData = categories.map((category) => ({
-      name: category.name,
+    let categoriesData = categories.map(({ name, color }) => ({
+      name,
       amount: 0,
+      color,
     }));
 
     expenses.forEach(({ category, paid }) => {
       paid.map((payment) => {
         if (payment.month === month && payment.year === year) {
           categoriesData.map((obj) => {
-            console.log(obj, category);
             if (obj.name === category.name) {
               obj.amount += payment.amount;
             }
@@ -38,7 +38,7 @@ const Chart = () => {
       datasets: [
         {
           label: 'Expense',
-          backgroundColor: ['#008000'],
+          backgroundColor: categoriesData.map((cat) => cat.color),
           borderColor: '#000',
           borderWidth: 2,
           data: categoriesData.map((cat) => cat.amount),

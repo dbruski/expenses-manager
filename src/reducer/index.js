@@ -75,12 +75,15 @@ const reducer = (state, { type, payload }) => {
     case ADD_CATEGORY:
       return { ...state, categories: [...state.categories, payload.category] };
     case EDIT_CATEGORY:
+      console.log(payload);
       return {
         ...state,
         expenses: [
           ...state.expenses.map((expense) => {
             if (expense.category.id === payload.id) {
+              console.log(payload.name, payload.color);
               expense.category.name = payload.name;
+              expense.category.color = payload.color;
               return expense;
             }
             return expense;

@@ -67,10 +67,10 @@ export const addCategory = (dispatch) => (category) => {
   });
 };
 
-export const editCategory = (dispatch) => ({ id, name }) => {
+export const editCategory = (dispatch) => ({ id, name, color }) => {
   dispatch({
     type: EDIT_CATEGORY,
-    payload: { id, name },
+    payload: { id, name, color },
   });
 };
 

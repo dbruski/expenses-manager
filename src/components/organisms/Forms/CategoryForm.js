@@ -29,6 +29,9 @@ const CategoryForm = ({ id, closeModalFunction }) => {
     AppContext,
   );
   const [inputValue, setInputValue] = useState('');
+  const [color, setColor] = useState(
+    `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`,
+  );
 
   useEffect(() => {
     if (id) {
@@ -36,13 +39,14 @@ const CategoryForm = ({ id, closeModalFunction }) => {
         (category) => category.id === id,
       );
       setInputValue(selectedCategory.name);
+      setColor(selectedCategory.color);
     }
   }, [id, categories]);
 
   const handleAddCategory = (e) => {
     e.preventDefault();
     if (inputValue) {
-      addCategory({ id: Date.now(), name: inputValue });
+      addCategory({ id: Date.now(), name: inputValue, color });
       closeModalFunction();
     }
   };
@@ -50,7 +54,7 @@ const CategoryForm = ({ id, closeModalFunction }) => {
   const handleEditCategory = (e) => {
     e.preventDefault();
     if (inputValue) {
-      editCategory({ id, name: inputValue });
+      editCategory({ id, name: inputValue, color });
       closeModalFunction();
     }
   };
@@ -73,6 +77,14 @@ const CategoryForm = ({ id, closeModalFunction }) => {
         placeholder="category name*"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+      />
+      <label htmlFor="color">color at chart</label>
+      <input
+        type="color"
+        name="color"
+        id="color"
+        onChange={(e) => setColor(e.target.value)}
+        value={color}
       />
       <ButotnsContainer>
         {id ? (

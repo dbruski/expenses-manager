@@ -26,9 +26,9 @@ const initial =
         month: date.getMonth(),
         year: date.getFullYear(),
         categories: [
-          { id: 1, name: 'Car' },
-          { id: 2, name: 'House' },
-          { id: 3, name: 'Food' },
+          { id: 1, name: 'Car', color: '#4849a2' },
+          { id: 2, name: 'House', color: '#698102' },
+          { id: 3, name: 'Food', color: '#21af82' },
         ],
         expenses: [
           {
