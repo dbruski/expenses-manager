@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { device } from '../../../helpers';
 import CloseIcon from '@material-ui/icons/Close';
 
 const StyledOverlay = styled.div`
@@ -18,10 +19,22 @@ const StyledOverlay = styled.div`
 `;
 
 const StyledWrapper = styled.div`
-  position: relative;
-  width: 40vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+  width: 90vw;
   background: #eee;
   border-radius: 8px;
+  @media ${device.tablet} {
+    width: 50vw;
+  }
+
+  @media ${device.desktop} {
+    left: calc(50% - 4vw);
+    width: 30vw;
+  }
 `;
 
 const StyledHeader = styled.div`
@@ -63,8 +76,20 @@ const StyledContent = styled.div`
 `;
 
 const Modal = ({ header, children, closeModalFunction }) => {
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModalFunction();
+      }
+    });
+
+    return () => {
+      document.removeEventListener('keydown', closeModalFunction);
+    };
+  }, []);
   return (
-    <StyledOverlay>
+    <>
+      <StyledOverlay onClick={closeModalFunction} />
       <StyledWrapper>
         <StyledHeader>
           <h1>{header}</h1>
@@ -74,7 +99,7 @@ const Modal = ({ header, children, closeModalFunction }) => {
         </StyledCloseButton>
         <StyledContent>{children}</StyledContent>
       </StyledWrapper>
-    </StyledOverlay>
+    </>
   );
 };
 

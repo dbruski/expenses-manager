@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SidebarItem from './SidebarItem';
 import { Link } from 'react-router-dom';
 import { routes } from '../../../routes';
+import { device } from '../../../helpers';
 import HomeIcon from '@material-ui/icons/Home';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -10,31 +11,53 @@ import SettingsIcon from '@material-ui/icons/Settings';
 const StyledWrapper = styled.nav`
   position: fixed;
   left: 0;
-  top: 0;
+  bottom: 0;
   background: ${({ theme }) => theme.primary};
-  width: 8vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  width: 100vw;
+  height: 10vh;
+  z-index: 99;
+  box-shadow: 0 0 15px 0 ${({ theme }) => theme.black};
+  @media ${device.desktop} {
+    width: 8vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const StyledLogo = styled.div`
-  margin: 5vh auto 15vh auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 78px;
-  width: 78px;
-  font-size: 58px;
-  border-radius: 50px;
-  color: ${({ theme }) => theme.white};
-  font-weight: ${({ theme }) => theme.bold};
-  border: 10px solid ${({ theme }) => theme.white};
+  display: none;
+
+  @media ${device.desktop} {
+    display: flex;
+    margin: 5vh auto 15vh auto;
+    justify-content: center;
+    align-items: center;
+    height: 78px;
+    width: 78px;
+    font-size: 58px;
+    border-radius: 50px;
+    color: ${({ theme }) => theme.white};
+    font-weight: ${({ theme }) => theme.bold};
+    border: 10px solid ${({ theme }) => theme.white};
+  }
 `;
 
-const StyledList = styled.ul``;
+const StyledList = styled.ul`
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  @media ${device.desktop} {
+    width: auto;
+    display: block;
+  }
+`;
 
 const Sidebar = () => (
   <StyledWrapper>

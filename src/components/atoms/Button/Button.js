@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { device } from '../../../helpers';
 
 const Button = styled.button`
   display: flex;
@@ -47,20 +48,29 @@ const Button = styled.button`
   ${({ addExpense }) =>
     addExpense &&
     css`
-      position: absolute;
-      bottom: 20px;
+      position: fixed;
+      /* position: absolute; */
+      bottom: 10vh;
+      /* top: 10vh; */
       right: 20px;
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border-radius: 50px;
       background: ${({ theme }) => theme.primary};
       color: ${({ theme }) => theme.white};
       font-size: ${({ theme }) => theme.fontSize.xl};
+      z-index: 100;
       transition: 0.2s ease-in-out;
 
       :hover {
         font-size: 64px;
         transform: scale(1.09);
+      }
+      @media ${device.desktop} {
+        bottom: 20px;
+        right: 20px;
+        width: 100px;
+        height: 100px;
       }
     `}
 

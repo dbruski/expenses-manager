@@ -25,6 +25,12 @@ const StyledDateContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
+
+  svg {
+    font-size: ${({ theme }) => theme.fontSize.xl};
+    cursor: pointer;
+  }
 `;
 
 const Header = ({ title, withNav }) => {
@@ -51,17 +57,9 @@ const Header = ({ title, withNav }) => {
       <StyledHeader>{title}</StyledHeader>
       {withNav && (
         <StyledDateContainer>
-          <NavigateBeforeIcon
-            fontSize="large"
-            onClick={handlePrevMonth}
-            style={{ cursor: 'pointer' }}
-          />
+          <NavigateBeforeIcon onClick={handlePrevMonth} />
           {month !== undefined ? `${months[month].name} ${year}` : null}
-          <NavigateNextIcon
-            fontSize="large"
-            onClick={handleNextMonth}
-            style={{ cursor: 'pointer' }}
-          />
+          <NavigateNextIcon onClick={handleNextMonth} />
         </StyledDateContainer>
       )}
     </StyledWrapper>

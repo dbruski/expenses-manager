@@ -80,7 +80,7 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       );
       setFormValue({
         ...selectedExpense,
-        category: selectedExpense.category.name || NO_CATEGORY,
+        category: selectedExpense.category || NO_CATEGORY, //fixed to get category object not only its name
         inMonthAndYear,
       });
     }

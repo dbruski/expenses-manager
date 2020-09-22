@@ -22,3 +22,8 @@ export const emptyForm = {
   constantly: false,
   paid: [],
 };
+
+export const device = {
+  tablet: '(min-width: 768px)',
+  desktop: '(min-width: 1024px)',
+};

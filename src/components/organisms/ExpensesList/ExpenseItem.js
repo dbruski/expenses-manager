@@ -4,31 +4,46 @@ import styled, { css } from 'styled-components';
 import Modal from '../../molecules/Modal/Modal';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
+import { device } from '../../../helpers';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
 
 const StyledExpense = styled.li`
   display: grid;
-  grid-template-columns: 1fr 0.25fr 0.25fr 0.25fr 0.25fr 0.25fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   background: ${({ theme }) => theme.white};
-  margin-bottom: 1px;
-  padding: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
   transition: 0.2s ease-in-out;
-
-  :hover {
-    background: ${({ theme }) => theme.grey100};
-  }
 
   ${({ header }) =>
     header &&
     css`
-      background: ${({ theme }) => theme.primary};
-      color: ${({ theme }) => theme.white};
-
-      :hover {
-        background: ${({ theme }) => theme.primary};
-      }
+      display: none;
     `}
+
+  @media ${device.tablet} {
+    padding: 15px;
+    margin-bottom: 1px;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 0.25fr 0.25fr 0.25fr 0.25fr 0.25fr;
+
+    :hover {
+      background: ${({ theme }) => theme.grey100};
+    }
+
+    ${({ header }) =>
+      header &&
+      css`
+        display: grid;
+        background: ${({ theme }) => theme.primary};
+        color: ${({ theme }) => theme.white};
+
+        :hover {
+          background: ${({ theme }) => theme.primary};
+        }
+      `}
+  }
 `;
 
 const StyledExpenseItem = styled.p`
@@ -39,8 +54,31 @@ const StyledExpenseItem = styled.p`
   ${({ nameItem }) =>
     nameItem &&
     css`
-      justify-content: flex-start;
+      background: ${({ theme }) => theme.primary};
+      color: ${({ theme }) => theme.white};
     `}
+
+  @media ${device.tablet} {
+    ${({ nameItem }) =>
+      nameItem &&
+      css`
+        color: ${({ theme }) => theme.black};
+        background: none;
+        justify-content: flex-start;
+      `}
+    ${({ header }) =>
+      header &&
+      css`
+        color: ${({ theme }) => theme.white};
+      `}
+  }
+`;
+
+const StyledMobileLabel = styled.span`
+  margin: 5px;
+  @media ${device.tablet} {
+    display: none;
+  }
 `;
 
 const StyledStatusContainer = styled.span`
@@ -115,10 +153,11 @@ const ExpenseItem = ({
     if (header) {
       return 'amount';
     } else if (checkIfPaid()) {
-      return paid.find((obj) => obj.month === month && obj.year === year)
-        .amount;
+      return `${
+        paid.find((obj) => obj.month === month && obj.year === year).amount
+      },00`;
     } else {
-      return amount;
+      return `${amount},00`;
     }
   };
 
@@ -167,11 +206,22 @@ const ExpenseItem = ({
   };
   return (
     <StyledExpense header={header}>
-      <StyledExpenseItem nameItem>{name}</StyledExpenseItem>
-      <StyledExpenseItem>{handleAmountContext(header)}</StyledExpenseItem>
-      <StyledExpenseItem>{handleDeadlineContent(header)}</StyledExpenseItem>
+      <StyledExpenseItem nameItem header={header}>
+        {name}
+      </StyledExpenseItem>
+      <StyledExpenseItem>
+        <StyledMobileLabel>amount:</StyledMobileLabel>
+        {handleAmountContext(header)}
+      </StyledExpenseItem>
+      <StyledExpenseItem>
+        <StyledMobileLabel>deadline:</StyledMobileLabel>
+        {handleDeadlineContent(header)}
+      </StyledExpenseItem>
+      <StyledExpenseItem>
+        <StyledMobileLabel>type:</StyledMobileLabel>
+        {handleExpenseType(header)}
+      </StyledExpenseItem>
       <StyledExpenseItem>{handleActionContent(header)}</StyledExpenseItem>
-      <StyledExpenseItem>{handleExpenseType(header)}</StyledExpenseItem>
       <StyledExpenseItem>{handleStatus(header)}</StyledExpenseItem>
       {isModalOpen && (
         <Modal

@@ -111,11 +111,13 @@ const Settings = () => {
         <Header title="Settings" />
         <StyledContainer>
           <StyledHeading>Categories</StyledHeading>
-          {categories.map(({ id, name }) => (
-            <StyledCategory key={id} onClick={() => handleCategoryClick(id)}>
-              {name}
-            </StyledCategory>
-          ))}
+          {categories
+            .sort((a, b) => a.id - b.id)
+            .map(({ id, name }) => (
+              <StyledCategory key={id} onClick={() => handleCategoryClick(id)}>
+                {name}
+              </StyledCategory>
+            ))}
           <StyledCategory add onClick={handleAddCategoryClick}>
             +
           </StyledCategory>
@@ -123,9 +125,11 @@ const Settings = () => {
         {expensesWithoutCategory.length ? (
           <StyledWarning>
             The following expense(s):
-            {expensesWithoutCategory.map((expense) => (
-              <span key={expense.id}> {expense.name}</span>
-            ))}
+            {expensesWithoutCategory
+              .sort((a, b) => a.id - b.id)
+              .map((expense) => (
+                <span key={expense.id}> {expense.name}</span>
+              ))}
             {expensesWithoutCategory > 1 ? " don't" : " doesn't"} have specified
             category. Select the category to have proper data on chart
           </StyledWarning>
@@ -133,22 +137,26 @@ const Settings = () => {
         {activeExpenses.length ? (
           <StyledContainer>
             <StyledHeading>Active expenses</StyledHeading>
-            {activeExpenses.map(({ id, name }) => (
-              <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
-                {name}
-              </StyledCategory>
-            ))}
+            {activeExpenses
+              .sort((a, b) => a.id - b.id)
+              .map(({ id, name }) => (
+                <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
+                  {name}
+                </StyledCategory>
+              ))}
           </StyledContainer>
         ) : null}
 
         {unusedExpenses.length ? (
           <StyledContainer>
             <StyledHeading>Unused expenses</StyledHeading>
-            {unusedExpenses.map(({ id, name }) => (
-              <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
-                {name}
-              </StyledCategory>
-            ))}
+            {unusedExpenses
+              .sort((a, b) => a.id - b.id)
+              .map(({ id, name }) => (
+                <StyledCategory key={id} onClick={() => handleExpenseClick(id)}>
+                  {name}
+                </StyledCategory>
+              ))}
           </StyledContainer>
         ) : null}
 
