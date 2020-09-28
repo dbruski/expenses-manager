@@ -26,6 +26,7 @@ const StyledDateContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  color: ${({ theme }) => theme.black};
 
   svg {
     font-size: ${({ theme }) => theme.fontSize.xl};

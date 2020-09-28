@@ -25,7 +25,7 @@ const StyledWrapper = styled.div`
   transform: translate(-50%, -50%);
   z-index: 10001;
   width: 90vw;
-  background: #eee;
+  background: ${({ theme }) => theme.grey50};
   border-radius: 8px;
   @media ${device.tablet} {
     width: 50vw;

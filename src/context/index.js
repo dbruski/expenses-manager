@@ -11,6 +11,8 @@ import {
   addCategory,
   editCategory,
   deleteCategory,
+  changeTheme,
+  setDaysToRemind,
 } from '../actions';
 
 export const AppContext = createContext();
@@ -107,6 +109,9 @@ const initial =
             added: '2020-09-08T22:00:00.000Z',
           },
         ],
+        isThemeDark:
+          date.getHours() < 6 || date.getHours() >= 20 ? true : false,
+        daysToRemind: 3,
       }
     : JSON.parse(localStorage.getItem('expenses-manager-state'));
 
@@ -124,6 +129,9 @@ export const Provider = ({ children }) => {
         year: date.getFullYear(),
         expenses: state.expenses,
         categories: state.categories,
+        isThemeDark:
+          date.getHours() < 6 || date.getHours() >= 20 ? true : false,
+        daysToRemind: state.daysToRemind,
       }),
     );
   }, [state]);
@@ -132,12 +140,14 @@ export const Provider = ({ children }) => {
     <AppContext.Provider
       value={{
         day: state.day,
-        currentMonth: state.currentMonth,
-        currentYear: state.currentYear,
         month: state.month,
         year: state.year,
+        currentMonth: state.currentMonth,
+        currentYear: state.currentYear,
         categories: state.categories,
         expenses: state.expenses,
+        isThemeDark: state.isThemeDark,
+        daysToRemind: state.daysToRemind,
         setMonth: setMonth(dispatch),
         setYear: setYear(dispatch),
         setAsPaid: setAsPaid(dispatch),
@@ -148,6 +158,8 @@ export const Provider = ({ children }) => {
         addCategory: addCategory(dispatch),
         editCategory: editCategory(dispatch),
         deleteCategory: deleteCategory(dispatch),
+        changeTheme: changeTheme(dispatch),
+        setDaysToRemind: setDaysToRemind(dispatch),
       }}
     >
       {children}

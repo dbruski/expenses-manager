@@ -10,6 +10,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.black};
 `;
 
 const ButotnsContainer = styled.div`

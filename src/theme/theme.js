@@ -18,3 +18,24 @@ export const theme = {
     xl: '40px',
   },
 };
+
+export const darkTheme = {
+  primary: '#008000',
+  primary100: '#006400',
+  danger: '#800000',
+  white: 'hsl(0, 0%, 0%)',
+  black: 'hsl(0, 0%, 100%)',
+  grey50: '#222222',
+  grey100: '#444444',
+  grey150: '#666666',
+  grey200: '#777777',
+  light: 300,
+  bold: 600,
+  fontSize: {
+    xs: '12px',
+    s: '16px',
+    m: '20px',
+    l: '24px',
+    xl: '40px',
+  },
+};

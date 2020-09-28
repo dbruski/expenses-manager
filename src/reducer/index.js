@@ -9,6 +9,8 @@ import {
   ADD_CATEGORY,
   EDIT_CATEGORY,
   DELETE_CATEGORY,
+  CHANGE_THEME,
+  SET_REMIND_DAYS,
 } from '../consts';
 
 const reducer = (state, { type, payload }) => {
@@ -110,6 +112,13 @@ const reducer = (state, { type, payload }) => {
           ...state.categories.filter((category) => category.id !== payload.id),
         ],
       };
+    case CHANGE_THEME:
+      return {
+        ...state,
+        isThemeDark: !state.isThemeDark,
+      };
+    case SET_REMIND_DAYS:
+      return { ...state, daysToRemind: payload.days };
     default:
       return state;
   }

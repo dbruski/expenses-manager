@@ -16,7 +16,7 @@ const StyledWrapper = styled.nav`
   width: 100vw;
   height: 10vh;
   z-index: 99;
-  box-shadow: 0 0 15px 0 ${({ theme }) => theme.black};
+  box-shadow: 0 0 15px 0 #000;
   @media ${device.desktop} {
     width: 8vw;
     height: 100vh;
@@ -39,9 +39,9 @@ const StyledLogo = styled.div`
     width: 78px;
     font-size: 58px;
     border-radius: 50px;
-    color: ${({ theme }) => theme.white};
+    color: #fff;
     font-weight: ${({ theme }) => theme.bold};
-    border: 10px solid ${({ theme }) => theme.white};
+    border: 10px solid #fff;
   }
 `;
 

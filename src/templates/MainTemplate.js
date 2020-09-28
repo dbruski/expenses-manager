@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../theme/GlobalStyle';
-import { theme } from '../theme/theme';
+import { AppContext } from '../context/';
+import { theme, darkTheme } from '../theme/theme';
 
-const MainTemplate = ({ children }) => (
-  <>
-    <GlobalStyle />
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
-  </>
-);
+const MainTemplate = ({ children }) => {
+  const { isThemeDark } = useContext(AppContext);
+
+  return (
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={isThemeDark ? darkTheme : theme}>
+        {children}
+      </ThemeProvider>
+    </>
+  );
+};
 MainTemplate.propTypes = {
   children: PropTypes.element.isRequired,
 };

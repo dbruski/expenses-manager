@@ -9,3 +9,5 @@ export const ADD_CATEGORY = 'ADD_CATEGORY';
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 export const NO_CATEGORY = 'NO_CATEGORY';
+export const CHANGE_THEME = 'CHANGE_THEME';
+export const SET_REMIND_DAYS = 'SET_REMIND_DAYS';

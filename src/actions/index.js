@@ -9,6 +9,8 @@ import {
   ADD_CATEGORY,
   EDIT_CATEGORY,
   DELETE_CATEGORY,
+  CHANGE_THEME,
+  SET_REMIND_DAYS,
 } from '../consts';
 
 export const setMonth = (dispatch) => (month) => {
@@ -78,5 +80,18 @@ export const deleteCategory = (dispatch) => (id) => {
   dispatch({
     type: DELETE_CATEGORY,
     payload: { id },
+  });
+};
+
+export const changeTheme = (dispatch) => () => {
+  dispatch({
+    type: CHANGE_THEME,
+  });
+};
+
+export const setDaysToRemind = (dispatch) => (days) => {
+  dispatch({
+    type: SET_REMIND_DAYS,
+    payload: { days },
   });
 };

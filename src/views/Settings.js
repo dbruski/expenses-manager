@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { AppContext } from '../context';
 import PageTemplate from '../templates/PageTemplate';
+import Checkbox from '../components/atoms/Input/Checkbox';
 import Header from '../components/organisms/Header/Header';
 import Modal from '../components/molecules/Modal/Modal';
 import CategoryForm from '../components/organisms/Forms/CategoryForm';
@@ -15,6 +16,36 @@ const StyledContainer = styled.div`
   width: 90%;
   margin: 5vh auto;
   padding: 5px;
+`;
+
+const StyledActionsContainer = styled.div`
+  width: 90%;
+  margin: 5vh auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: ${({ theme }) => theme.black};
+`;
+
+const StyledSingleAction = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledHeader = styled.h1`
+  color: ${({ theme }) => theme.primary};
+`;
+
+const StyledButton = styled.button`
+  font-size: ${({ theme }) => theme.fontSize.l};
+  font-weight: ${({ theme }) => theme.bold};
+  color: ${({ theme }) => theme.black};
+  background: transparent;
+  outline: none;
+  border: none;
+  margin: 0 5px;
 `;
 
 const StyledHeading = styled.div`
@@ -34,6 +65,7 @@ const StyledCategory = styled.div`
   font-size: ${({ theme }) => theme.fontSize.m};
   border: 2px solid ${({ theme }) => theme.primary};
   background: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.black};
   border-radius: 12px;
   padding: 5px 10px;
   margin: 5px;
@@ -63,7 +95,14 @@ const StyledWarning = styled.p`
 `;
 
 const Settings = () => {
-  const { expenses, categories } = useContext(AppContext);
+  const {
+    expenses,
+    categories,
+    isThemeDark,
+    changeTheme,
+    daysToRemind,
+    setDaysToRemind,
+  } = useContext(AppContext);
   const [categoryModal, setCategoryModal] = useState(false);
   const [clickedCategoryId, setClickedCategoryId] = useState(null);
   const [expenseModal, setExpenseModal] = useState(false);
@@ -105,10 +144,33 @@ const Settings = () => {
     setExpenseModal(true);
   };
 
+  const handleThemeChange = (isThemeDark) => changeTheme(!isThemeDark);
+
+  const incrementDaysToRemind = () => setDaysToRemind(daysToRemind + 1);
+  const decrementDaysToRemind = () => {
+    if (daysToRemind > 1) setDaysToRemind(daysToRemind - 1);
+  };
+
   return (
     <PageTemplate>
       <>
         <Header title="Settings" />
+        <StyledActionsContainer>
+          <StyledSingleAction>
+            <StyledHeader>Change theme</StyledHeader>
+            <Checkbox
+              checked={isThemeDark}
+              changeFunction={handleThemeChange}
+            />
+          </StyledSingleAction>
+          <StyledSingleAction>
+            <StyledHeader>Remind {daysToRemind} days before</StyledHeader>
+            <div>
+              <StyledButton onClick={decrementDaysToRemind}>-1</StyledButton>
+              <StyledButton onClick={incrementDaysToRemind}>+1</StyledButton>
+            </div>
+          </StyledSingleAction>
+        </StyledActionsContainer>
         <StyledContainer>
           <StyledHeading>Categories</StyledHeading>
           {categories
@@ -146,7 +208,6 @@ const Settings = () => {
               ))}
           </StyledContainer>
         ) : null}
-
         {unusedExpenses.length ? (
           <StyledContainer>
             <StyledHeading>Unused expenses</StyledHeading>
@@ -159,7 +220,6 @@ const Settings = () => {
               ))}
           </StyledContainer>
         ) : null}
-
         {categoryModal && (
           <Modal
             header="Category management"

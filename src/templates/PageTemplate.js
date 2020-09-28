@@ -9,6 +9,7 @@ const StyledWrapper = styled.main`
   min-height: 100vh;
   width: 100vw;
   margin: 0 0 10vh 0;
+  background: ${({ theme }) => theme.grey50};
   overflow: hidden;
 
   @media ${device.desktop} {

@@ -27,6 +27,7 @@ const ExpensesList = () => {
     currentYear,
     expenses,
     setAsPaid,
+    daysToRemind,
   } = useContext(AppContext);
   const [expensesInThisMonth, setExpensesInThisMonth] = useState([]);
 
@@ -83,6 +84,7 @@ const ExpensesList = () => {
               auto={expense.auto}
               paid={expense.paid}
               setAsPaidFc={setAsPaid}
+              daysToRemind={daysToRemind}
               day={day}
               month={month}
               currentMonth={currentMonth}

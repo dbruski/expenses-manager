@@ -15,6 +15,7 @@ const StyledExpense = styled.li`
   margin-bottom: 10px;
   padding-bottom: 5px;
   transition: 0.2s ease-in-out;
+  color: ${({ theme }) => theme.black};
 
   ${({ header }) =>
     header &&
@@ -108,6 +109,7 @@ const ExpenseItem = ({
   auto,
   paid,
   setAsPaidFc,
+  daysToRemind,
   day,
   month,
   currentMonth,
@@ -116,7 +118,7 @@ const ExpenseItem = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentValue, setPaymentValue] = useState(amount);
-
+  const [shouldBeReminded, setShouldBeReminded] = useState(null);
   const handleSubmit = (e) => {
     e.preventDefault();
     setAsPaidFc(id, month, year, parseInt(paymentValue));
@@ -136,8 +138,12 @@ const ExpenseItem = ({
     ) {
       setAsPaidFc(id, month, year, amount);
     }
+    // deadline - daysToRemind <= day
+    //   ? setShouldBeReminded(true)
+    //   : setShouldBeReminded(false);
+
     //eslint-disable-next-line
-  }, [day, month, deadline, auto]);
+  }, [day, month, deadline, auto, daysToRemind]);
 
   const handleDeadlineContent = (header) => {
     if (header) {
@@ -205,7 +211,7 @@ const ExpenseItem = ({
     }
   };
   return (
-    <StyledExpense header={header}>
+    <StyledExpense header={header} shouldBeReminded>
       <StyledExpenseItem nameItem header={header}>
         {name}
       </StyledExpenseItem>
@@ -254,6 +260,7 @@ ExpenseItem.propTypes = {
   auto: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   paid: PropTypes.array,
   setPaidFc: PropTypes.func,
+  daysToRemind: PropTypes.number,
   day: PropTypes.number,
   month: PropTypes.number,
   year: PropTypes.number,

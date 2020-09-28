@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { device } from '../../../helpers';
+
 const StyledLink = styled.li`
   position: relative;
-  color: ${({ theme }) => theme.white};
+  color: #ffffff;
   cursor: pointer;
   border-radius: 12px;
   padding: 0 20px;
@@ -37,7 +38,7 @@ const StyledBadge = styled.div`
     width: 70px;
     height: 20px;
     border-radius: 6px;
-    background: ${({ theme }) => theme.black};
+    background: #000;
     text-align: center;
     transform: translate(-50%, -50%);
 
