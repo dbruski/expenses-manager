@@ -81,10 +81,11 @@ const ExpenseForm = ({ id, closeModalFunction }) => {
       );
       setFormValue({
         ...selectedExpense,
-        category: selectedExpense.category || NO_CATEGORY, //fixed to get category object not only its name
+        category: selectedExpense.category || NO_CATEGORY,
         inMonthAndYear,
       });
     }
+    //eslint-disable-next-line
   }, [id, currentYear, currentMonth, day]);
 
   const handleSubmit = (e) => {

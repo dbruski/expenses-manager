@@ -29,8 +29,10 @@ const Chart = () => {
             if (obj.name === category.name) {
               obj.amount += payment.amount;
             }
+            return obj;
           });
         }
+        return payment;
       });
     });
     setData({

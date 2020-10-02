@@ -86,6 +86,7 @@ const Modal = ({ header, children, closeModalFunction }) => {
     return () => {
       document.removeEventListener('keydown', closeModalFunction);
     };
+    //eslint-disable-next-line
   }, []);
   return (
     <>

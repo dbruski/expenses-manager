@@ -22,6 +22,12 @@ const StyledExpense = styled.li`
     css`
       display: none;
     `}
+  ${({ shouldBeReminded }) =>
+    shouldBeReminded &&
+    css`
+      color: ${({ theme }) => theme.danger};
+      font-weight: ${({ theme }) => theme.bold};
+    `}
 
   @media ${device.tablet} {
     padding: 15px;
@@ -118,7 +124,7 @@ const ExpenseItem = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentValue, setPaymentValue] = useState(amount);
-  const [shouldBeReminded, setShouldBeReminded] = useState(null);
+  const [shouldBeReminded, setShouldBeReminded] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     setAsPaidFc(id, month, year, parseInt(paymentValue));
@@ -138,9 +144,11 @@ const ExpenseItem = ({
     ) {
       setAsPaidFc(id, month, year, amount);
     }
-    // deadline - daysToRemind <= day
-    //   ? setShouldBeReminded(true)
-    //   : setShouldBeReminded(false);
+    if (month === currentMonth && year === currentYear && !checkIfPaid()) {
+      deadline - daysToRemind <= day
+        ? setShouldBeReminded(true)
+        : setShouldBeReminded(false);
+    }
 
     //eslint-disable-next-line
   }, [day, month, deadline, auto, daysToRemind]);
@@ -211,7 +219,7 @@ const ExpenseItem = ({
     }
   };
   return (
-    <StyledExpense header={header} shouldBeReminded>
+    <StyledExpense header={header} shouldBeReminded={shouldBeReminded}>
       <StyledExpenseItem nameItem header={header}>
         {name}
       </StyledExpenseItem>
